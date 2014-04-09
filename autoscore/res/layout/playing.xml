@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/back"
+    android:orientation="vertical" >
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="10sp"
+        android:useDefaultMargins="true"
+        android:columnCount="5"
+        android:rowCount="3"
+        android:layout_weight="1.4" >
+
+        <TextView
+            android:id="@+id/playtempo"
+            android:layout_columnSpan="1"
+            android:gravity="center_vertical"
+            android:layout_marginRight="20sp"
+            android:text="Tempo"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/playtempoedit"
+            android:layout_columnSpan="1"
+            android:layout_gravity="fill"
+            android:ems="10"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/playmetronome"
+            android:layout_columnSpan="2"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="150sp"
+            android:layout_marginRight="20sp"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:text="Metronome" />
+
+        <ToggleButton
+            android:id="@+id/metrotoggle"
+            android:layout_columnSpan="1"
+            android:textOn="Check"
+            android:textOff="none" />
+
+        <TextView
+            android:id="@+id/playquan"
+            android:layout_columnSpan="1"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:text="Quantize" />
+
+        <Spinner
+            android:id="@+id/playquansp"
+            android:layout_columnSpan="1"
+            tools:listitem="@android:layout/simple_spinner_item" />
+
+        <ImageButton
+            android:id="@+id/playstart"
+            android:layout_rowSpan="2"
+            android:src="@drawable/play" />
+
+        <ImageButton
+            android:id="@+id/playpause"
+            android:layout_gravity="center_horizontal"
+            android:layout_rowSpan="2"
+            android:src="@drawable/pause" />
+
+        <ImageButton
+            android:id="@+id/playstop"
+			android:layout_rowSpan="2"
+            android:src="@drawable/stop" />
+
+        <TextView
+            android:id="@+id/playtri"
+            android:layout_columnSpan="1"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:text="Triple" />
+
+        <ToggleButton
+            android:id="@+id/playtritoggle"
+            android:layout_columnSpan="1"
+            android:textOn="Check"
+            android:textOff="none" />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</LinearLayout>

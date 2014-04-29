@@ -24,7 +24,7 @@ public class Playing extends Setting{
 		metrotext.setTypeface(face);
 		quantext.setTypeface(face);
 		
-		EditText tempoedit = (EditText)findViewById(R.id.playtempoedit);		
+	/*EditText tempoedit = (EditText)findViewById(R.id.playtempoedit);		
 		Intent intent = getIntent();
 		tempoedit.setText(intent.getStringExtra("tempodata"));
 		tri = intent.getExtras().getBoolean("tridata");
@@ -40,6 +40,6 @@ public class Playing extends Setting{
 		ArrayAdapter<String> playquanlist;
 		playquanlist = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, quant);
 		playquansp.setAdapter(playquanlist);
-		playquansp.setSelection(quanti);
+		playquansp.setSelection(quanti);*/
 	}
 }

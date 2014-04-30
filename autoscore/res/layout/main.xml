@@ -45,7 +45,7 @@
                     android:text="HOW TO USE" />
 
                 <Button
-                    android:id="@+id/ddd"
+                    android:id="@+id/sss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="DEVELOPERS" />

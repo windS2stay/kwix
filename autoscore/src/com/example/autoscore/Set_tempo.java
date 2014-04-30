@@ -17,9 +17,9 @@ import android.widget.Toast;
 import android.widget.NumberPicker.OnValueChangeListener;
 
 public class Set_tempo extends Activity {
-	int nHeight;
+	int nHeight, nWidth;
 	PowerManager.WakeLock mWakeLock;
-	ImageButton playButton;
+	ImageButton playButton, stopButton;
 	TickPlayer tp;
 	NumberPicker tempo;
 	int curTempo = 120;
@@ -52,14 +52,16 @@ public class Set_tempo extends Activity {
 		// ///////////////////////////
 		mRunning = false;
 		playButton = (ImageButton) findViewById(R.id.metronomePlayButton);
+		stopButton = (ImageButton) findViewById(R.id.metronumeStopButton);
 		tempo = (NumberPicker) findViewById(R.id.tempoPicker);
 		Display display = ((WindowManager) this
 				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		nHeight = display.getHeight();
-		TextView metronumeText=(TextView)findViewById(R.id.metronumeText);
+		nWidth = display.getWidth();
+		TextView metronumeText = (TextView) findViewById(R.id.metronumeText);
 		metronumeText.setTextSize(nHeight / 100 * 5);
 		metronumeText.setTextColor(Color.parseColor("#000000"));
-		
+
 		// /////////////////////////////메트로눔
 		// 관련/////////////////////////////////////
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -79,22 +81,28 @@ public class Set_tempo extends Activity {
 		 * oldVal + ", newVal:" + newVal,Toast.LENGTH_SHORT).show(); } });
 		 */// numberPicker에서 바뀐값 확인할때 사용
 
-		playButton.setOnClickListener(new OnClickListener() { // 플레이 버튼을 눌렀을 때
+		// ////numberpick 크기//////
+		tempo.setMinimumHeight(nHeight / 100 * 40);
+		tempo.setMinimumWidth(nWidth / 100 * 30);
+		// //////////
 
+		playButton.setOnClickListener(new OnClickListener() { // 플레이 버튼을 눌렀을 때
 					public void onClick(View v) {
 						mRunning = !mRunning;
-
 						if (mRunning) {
 							mWakeLock.acquire();
 							tp.onStart(-1, tempo.getValue());
 							curTempo = tempo.getValue();
-							playButton.setImageResource(R.drawable.pause);
-						} else {
+						}
+					}
+				});
+		stopButton.setOnClickListener(new OnClickListener() { // 플레이 버튼을 눌렀을 때
+					public void onClick(View v) {
+						mRunning = !mRunning;
+						if (!mRunning) {
 							mWakeLock.release();
 							tp.onStop();
-							playButton.setImageResource(R.drawable.play);
 						}
-
 					}
 				});
 	}
@@ -105,7 +113,6 @@ public class Set_tempo extends Activity {
 		if (mRunning) {
 			mWakeLock.release();
 			tp.onStop();
-			playButton.setImageResource(R.drawable.play);
 		}
 	}
 
@@ -115,7 +122,6 @@ public class Set_tempo extends Activity {
 		if (mRunning) {
 			mWakeLock.release();
 			tp.onStop();
-			playButton.setImageResource(R.drawable.play);
 		}
 	}
 
@@ -125,7 +131,7 @@ public class Set_tempo extends Activity {
 		if (mRunning) {
 			mWakeLock.release();
 			tp.onStop();
-			playButton.setImageResource(R.drawable.play);
+	
 		}
 	}
 }

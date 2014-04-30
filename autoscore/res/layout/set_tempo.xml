@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" >
@@ -20,22 +21,33 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tempoPicker"
-            android:orientation="vertical"
-            android:paddingLeft="20dp" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/metronumeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="Metronome" />
 
-            <ImageButton
-                android:id="@+id/metronomePlayButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/play" />
+                android:layout_height="wrap_content" >
+
+                <ImageButton
+                    android:id="@+id/metronomePlayButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/play" />
+
+                <ImageButton
+                    android:id="@+id/metronumeStopButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/stop" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
@@ -48,5 +60,5 @@
         android:background="#000000"
         android:text="Start"
         android:textColor="#ffffff" />
-    
+
 </RelativeLayout>

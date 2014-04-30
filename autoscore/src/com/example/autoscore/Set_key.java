@@ -6,15 +6,17 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Set_key extends Activity {
 
@@ -32,18 +34,19 @@ public class Set_key extends Activity {
 	// 악보 화면 추가하
 	// 1. 다른 화면 갔다와서도 변하지 않는 값 유지하기
 
-
-	int nHeight;
+	int nHeight, nWidth;
 	WheelView key;
-	ImageButton playButton;
+	ImageButton playButton, stopButton;
 	SoundManager s_manager;
+	ImageView note;
 	String keys[] = new String[] { "A", "A♭", "B", "B♭", "C", "D", "D♭", "E",
 			"E♭", "F", "F#", "G" };
+
 	Boolean isPlay = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 	}
 
 	protected void onResume() {
@@ -53,23 +56,98 @@ public class Set_key extends Activity {
 		// Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
 		key = (WheelView) findViewById(R.id.keyWheel);
 		playButton = (ImageButton) findViewById(R.id.keyPlay);
+		stopButton = (ImageButton) findViewById(R.id.keyStop);
+		note = (ImageView) findViewById(R.id.keyNote);
 		Display display = ((WindowManager) this
 				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		nHeight = display.getHeight();
-		
+		nWidth = display.getWidth();
+
 		key.setViewAdapter(new KeyArrayAdapter(this, keys, -1));
-		key.setCurrentItem(4);//기본값 C
+		key.setCurrentItem(4);// 기본값 C
+
+		// ////////////////////////////////////////// Wheel 부분 가로 세로 여백조
+		key.setMinimumHeight(nHeight / 100 * 30);
+		key.setMinimumWidth(nWidth / 100 * 20);
+		;
+		// key.setPadding(0, 0, nWidth / 100 * 5, 0);
+		note.setMinimumHeight(nHeight / 100 * 50);
+		note.setMinimumWidth(nWidth / 100 * 50);
+		// note.setPadding(nWidth / 100 * 10, 0, 0, 0);
+
+		// /////////////////////////////////////////
 		initSound();
 
+		key.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				key.onTouchEvent(event);
+				// Button tv = (Button) findViewById(R.id.recordbtn);
+				// tv.setText(Integer.toString(key.getCurrentItem()));
+				switch (key.getCurrentItem() + 1) {
+				case 1:
+					note.setImageResource(R.drawable.key_1);
+					break;
+				case 2:
+					note.setImageResource(R.drawable.key_2);
+					break;
+				case 3:
+					note.setImageResource(R.drawable.key_3);
+					break;
+
+				case 4:
+					note.setImageResource(R.drawable.key_4);
+					break;
+
+				case 5:
+					note.setImageResource(R.drawable.key_5);
+					break;
+
+				case 6:
+					note.setImageResource(R.drawable.key_6);
+					break;
+
+				case 7:
+					note.setImageResource(R.drawable.key_7);
+					break;
+
+				case 8:
+					note.setImageResource(R.drawable.key_8);
+					break;
+
+				case 9:
+					note.setImageResource(R.drawable.key_9);
+					break;
+
+				case 10:
+					note.setImageResource(R.drawable.key_10);
+					break;
+
+				case 11:
+					note.setImageResource(R.drawable.key_11);
+					break;
+
+				default:
+					break;
+
+				}
+				return false;
+			}
+
+		});
 		playButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				isPlay = !isPlay;
 				if (isPlay) {
 					playKey(key.getCurrentItem() + 1);
-					playButton.setImageResource(R.drawable.pause);
-				} else {
+				}
+			}
+		});
+		stopButton.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				isPlay = !isPlay;
+				if (!isPlay) {
 					stopKey(key.getCurrentItem() + 1);
-					playButton.setImageResource(R.drawable.play);
 				}
 			}
 		});
@@ -99,9 +177,8 @@ public class Set_key extends Activity {
 	}
 
 	private void stopKey(int key) {
-		for(int i=1;i<13;i++)
-		{
-		s_manager.stopSound(i);
+		for (int i = 1; i < 13; i++) {
+			s_manager.stopSound(i);
 		}
 	}
 
@@ -118,7 +195,7 @@ public class Set_key extends Activity {
 				int current) {
 			super(context, minValue, maxValue);
 			this.currentValue = current;
-			setTextSize(100);
+			setTextSize(10);
 		}
 
 		@Override
@@ -152,7 +229,11 @@ public class Set_key extends Activity {
 		public KeyArrayAdapter(Context context, String[] items, int current) {
 			super(context, items);
 			this.currentValue = current;
-			setTextSize(16);
+
+			// ////////////
+			// /글자 크기////
+			setTextSize(nHeight / 100 * 5);
+			// ///////////
 		}
 
 		@Override
@@ -176,7 +257,6 @@ public class Set_key extends Activity {
 		// Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
 		if (isPlay) {
 			stopKey(key.getCurrentItem() + 1);
-			playButton.setImageResource(R.drawable.play);
 		}
 	}
 
@@ -185,7 +265,6 @@ public class Set_key extends Activity {
 		// Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
 		if (isPlay) {
 			stopKey(key.getCurrentItem() + 1);
-			playButton.setImageResource(R.drawable.play);
 		}
 	}
 
@@ -194,7 +273,6 @@ public class Set_key extends Activity {
 		// Toast.makeText(this, "onDestory", Toast.LENGTH_SHORT).show();
 		if (isPlay) {
 			stopKey(key.getCurrentItem() + 1);
-			playButton.setImageResource(R.drawable.play);
 		}
 	}
 }

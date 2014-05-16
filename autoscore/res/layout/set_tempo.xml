@@ -9,46 +9,69 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" >
 
-        <NumberPicker
-            android:id="@+id/tempoPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
-
         <LinearLayout
-            android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/tempoPicker"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/metronumeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Metronome" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
 
             <LinearLayout
+                android:id="@+id/meter_score_linear"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-                <ImageButton
-                    android:id="@+id/metronomePlayButton"
+                <NumberPicker
+                     android:layout_gravity="center_vertical"
+                    android:id="@+id/tempo_picker"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/play" />
+                    android:layout_height="wrap_content" >
 
-                <ImageButton
-                    android:id="@+id/metronumeStopButton"
+                </NumberPicker>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/stop" />
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:id="@+id/metronome_play_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="#00000000"
+                        android:src="@drawable/play"/>
+
+                    <ImageButton
+                        android:id="@+id/metronume_stop_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="#00000000"
+                        android:src="@drawable/stop"
+               />
+                </LinearLayout>
+
             </LinearLayout>
+
+            <kankan.wheel.widget.WheelView
+                android:id="@+id/quantizeWheel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/triple_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/triple_note" />
+
+            <kankan.wheel.widget.WheelView
+                android:id="@+id/wheelView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
+
     </RelativeLayout>
 
     <Button

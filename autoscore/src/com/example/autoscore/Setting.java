@@ -14,15 +14,16 @@ import android.widget.TextView;
 
 public class Setting extends ActivityGroup {
 	TabHost mainTab;
-	int nHeight;
 	TextView tv;
 
+	// 4개의 액티비티를 묶어주는 액비티비 그
 	public void onCreate(Bundle savedInstanceState) {
 		Intent intent;
 		TabSpec tab;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting);
-		mainTab = (TabHost) findViewById(R.id.tabhost);
+
+		mainTab = (TabHost) findViewById(R.id.tab_host);
 		mainTab.setup(getLocalActivityManager()); // 오류난 이유
 
 		intent = new Intent(this, Set_tempo.class);
@@ -40,7 +41,7 @@ public class Setting extends ActivityGroup {
 		tab.setContent(intent);
 		mainTab.addTab(tab);
 
-		intent = new Intent(this, Set_quantize.class);
+		/*intent = new Intent(this, Set_quantize.class);
 		tab = mainTab.newTabSpec("quantize");
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		tab.setIndicator("quantize");
@@ -52,31 +53,26 @@ public class Setting extends ActivityGroup {
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		tab.setIndicator("meter/score");
 		tab.setContent(intent);
-		mainTab.addTab(tab);
+		mainTab.addTab(tab);*/
+
+		// //인텐트 추가 완
 
 		// ///////////////////////////////////////////////////////////////////
-		// ////////////////////////////디스플레이 정보////////////////////////////
+		// ////////////////////////////탭호스트 설////////////////////////////
 
-		Display display = ((WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		nHeight = display.getHeight();
-		// Toast.makeText(this,nWidth+","+nHeight,Toast.LENGTH_LONG).show();
-		// ///////////////////////////////////////////////////////////////////
-		// ///////////////////////////////////////////////////////////////////
-
-		// //초기값 설정////
+		// //초기 설정////
 		for (int i = 0; i < mainTab.getTabWidget().getChildCount(); i++) {
 			mainTab.getTabWidget().getChildAt(i)
 					.setBackgroundColor(Color.parseColor("#000000"));
-
 			tv = (TextView) mainTab.getTabWidget().getChildAt(i)
 					.findViewById(android.R.id.title);
 			tv.setTextColor(Color.parseColor("#FFFFFF"));
-
-			mainTab.getTabWidget().getChildAt(i).getLayoutParams().height = nHeight / 100 * 15;// 탭호스트비율
-			tv.setTextSize(nHeight / 100 * 4);
-
+			mainTab.getTabWidget().getChildAt(i).getLayoutParams().height = Main.nHeight  * 15;// 탭호스트비율
+			tv.setTextSize(Main.nHeight * 4);
 		}
+		//배경은 검정 글자는 흰색 탭크기는 화면의 15% 글자 크기는 4%
+		
+		//선택된 탭만 색깔 변경 현재 초기는 tempo로 되어있다.
 		mainTab.getTabWidget().getChildAt(mainTab.getCurrentTab())
 				.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		tv = (TextView) mainTab.getTabWidget()
@@ -84,9 +80,8 @@ public class Setting extends ActivityGroup {
 				.findViewById(android.R.id.title);
 		tv.setTextColor(Color.parseColor("#000000"));
 
-		// //////////////
-
-		// // 계속 바뀔때마다 /////
+		//탭을 클릭할때 마다 바꾸게 해주는 리스너
+		//설정값은 초기와 같다.
 		mainTab.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {

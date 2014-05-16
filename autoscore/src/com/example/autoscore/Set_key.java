@@ -1,22 +1,21 @@
 package com.example.autoscore;
 
-import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Set_key extends Activity {
 
@@ -34,19 +33,19 @@ public class Set_key extends Activity {
 	// 악보 화면 추가하
 	// 1. 다른 화면 갔다와서도 변하지 않는 값 유지하기
 
-	int nHeight, nWidth;
-	WheelView key;
 	ImageButton playButton, stopButton;
+	TextView keyText,meterText,scoreText;
+	TextView key,meter,score;
 	SoundManager s_manager;
 	ImageView note;
-	String keys[] = new String[] { "A", "A♭", "B", "B♭", "C", "D", "D♭", "E",
+	LinearLayout l1,l2,l3,l4;
+	CharSequence[] keys = { "A", "A♭", "B", "B♭", "C", "D", "D♭", "E",
 			"E♭", "F", "F#", "G" };
-
+	CharSequence[] meters={"3/4","4/4","6/8"};
 	Boolean isPlay = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 
 	protected void onResume() {
@@ -54,103 +53,165 @@ public class Set_key extends Activity {
 		setContentView(R.layout.set_key);
 
 		// Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
-		key = (WheelView) findViewById(R.id.keyWheel);
-		playButton = (ImageButton) findViewById(R.id.keyPlay);
-		stopButton = (ImageButton) findViewById(R.id.keyStop);
-		note = (ImageView) findViewById(R.id.keyNote);
-		Display display = ((WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		nHeight = display.getHeight();
-		nWidth = display.getWidth();
+		playButton = (ImageButton) findViewById(R.id.key_play);
+		stopButton = (ImageButton) findViewById(R.id.key_stop);
+		note = (ImageView) findViewById(R.id.key_note);
+		keyText = (TextView) findViewById(R.id.key_text);
+		meterText = (TextView) findViewById(R.id.meter_text);
+		scoreText = (TextView) findViewById(R.id.score_text);
+		key = (TextView) findViewById(R.id.key);
+		meter = (TextView) findViewById(R.id.meter);
+		score = (TextView) findViewById(R.id.score);
+		
+		LinearLayout l1=(LinearLayout)findViewById(R.id.other_linear);
+		LinearLayout l2=(LinearLayout)findViewById(R.id.linear1);
+		LinearLayout l3=(LinearLayout)findViewById(R.id.linear2);
+		LinearLayout l4=(LinearLayout)findViewById(R.id.linear3);
+		
+		note.setMinimumHeight(Main.nHeight * 50);
+		note.setMinimumWidth(Main.nWidth * 30);
+		keyText.setTextSize(Main.nHeight * 5);
+		meterText.setTextSize(Main.nHeight * 5);
+		scoreText.setTextSize(Main.nHeight * 5);
+		key.setTextSize(Main.nHeight * 10);
+		meter.setTextSize(Main.nHeight * 7);
+		score.setTextSize(Main.nHeight * 6);
 
-		key.setViewAdapter(new KeyArrayAdapter(this, keys, -1));
-		key.setCurrentItem(4);// 기본값 C
+		// /////////////////////여백 조절////////////////////
+		note.setPadding(Main.nHeight * 10, 0, Main.nHeight * 5, 0);
+		keyText.setPadding(Main.nHeight, 0, Main.nHeight, 0);
+		playButton.setPadding(Main.nHeight * 5, Main.nHeight * 5,
+				Main.nHeight * 5, Main.nHeight * 5);
+		stopButton.setPadding(Main.nHeight * 5, Main.nHeight * 5,
+				Main.nHeight * 5, Main.nHeight * 5);
+		l2.setPadding(Main.nHeight, Main.nHeight,Main.nHeight, Main.nHeight);
+		l3.setPadding(Main.nHeight, Main.nHeight,Main.nHeight, Main.nHeight);
+		l4.setPadding(Main.nHeight, Main.nHeight,Main.nHeight, Main.nHeight);
+		l1.setPadding(Main.nHeight*5, 0,Main.nHeight*5, 0);
 
-		// ////////////////////////////////////////// Wheel 부분 가로 세로 여백조
-		key.setMinimumHeight(nHeight / 100 * 30);
-		key.setMinimumWidth(nWidth / 100 * 20);
-		;
-		// key.setPadding(0, 0, nWidth / 100 * 5, 0);
-		note.setMinimumHeight(nHeight / 100 * 50);
-		note.setMinimumWidth(nWidth / 100 * 50);
-		// note.setPadding(nWidth / 100 * 10, 0, 0, 0);
-
-		// /////////////////////////////////////////
+		keyText.setWidth(Main.nWidth * 20);
+		scoreText.setWidth(Main.nWidth * 20);
+		meterText.setWidth(Main.nWidth * 20);
 		initSound();
 
-		key.setOnTouchListener(new View.OnTouchListener() {
+		AlertDialog.Builder builder1 = new AlertDialog.Builder(this); 
 
-			public boolean onTouch(View v, MotionEvent event) {
-				key.onTouchEvent(event);
-				// Button tv = (Button) findViewById(R.id.recordbtn);
-				// tv.setText(Integer.toString(key.getCurrentItem()));
-				switch (key.getCurrentItem() + 1) {
-				case 1:
-					note.setImageResource(R.drawable.key_1);
-					break;
-				case 2:
-					note.setImageResource(R.drawable.key_2);
-					break;
-				case 3:
-					note.setImageResource(R.drawable.key_3);
-					break;
+		// 여기서 부터는 알림창의 속성 설정
+		builder1.setTitle("Key setting") // 제목 설정
+				.setItems(keys, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int index) {
+						// Toast.makeText(getApplicationContext(),
+						// keys[index],Toast.LENGTH_SHORT).show();
+						switch (index + 1) {
+						case 1:// A
+							note.setImageResource(R.drawable.key_4);
+							key.setText("A");
+							break;
+						case 2:// Ab
+							note.setImageResource(R.drawable.key_9);
+							key.setText("Ab");
+							break;
+						case 3:// B
+							note.setImageResource(R.drawable.key_6);
+							key.setText("B");
+							break;
+						case 4:// Bb
+							note.setImageResource(R.drawable.key_13);
+							key.setText("Bb");
+							break;
+						case 5:// C
+							note.setImageResource(R.drawable.key_1);
+							key.setText("C");
+							break;
+						case 6:// D
+							note.setImageResource(R.drawable.key_3);
+							key.setText("D");
+							break;
+						case 7:// Db
+							note.setImageResource(R.drawable.key_11);
+							key.setText("Db");
+							break;
+						case 8:// E
+							note.setImageResource(R.drawable.key_5);
+							key.setText("E");
+							break;
+						case 9:// Eb
+							note.setImageResource(R.drawable.key_10);
+							key.setText("Eb");
+							break;
+						case 10:// F
+							note.setImageResource(R.drawable.key_12);
+							key.setText("F");
+							break;
+						case 11:// F#
+							note.setImageResource(R.drawable.key_7);
+							key.setText("F#");
+							break;
+						case 12:// G
+							note.setImageResource(R.drawable.key_2);
+							key.setText("G");
+							break;
 
-				case 4:
-					note.setImageResource(R.drawable.key_4);
-					break;
+						default:
+							break;
 
-				case 5:
-					note.setImageResource(R.drawable.key_5);
-					break;
+						}
+					}
+				});
+		final AlertDialog dialog1 = builder1.create(); // 알림창 객체 생성
+		// 알림창 띄우기
 
-				case 6:
-					note.setImageResource(R.drawable.key_6);
-					break;
+		key.setOnClickListener(new OnClickListener() {
 
-				case 7:
-					note.setImageResource(R.drawable.key_7);
-					break;
-
-				case 8:
-					note.setImageResource(R.drawable.key_8);
-					break;
-
-				case 9:
-					note.setImageResource(R.drawable.key_9);
-					break;
-
-				case 10:
-					note.setImageResource(R.drawable.key_10);
-					break;
-
-				case 11:
-					note.setImageResource(R.drawable.key_11);
-					break;
-
-				default:
-					break;
-
-				}
-				return false;
-			}
-
-		});
-		playButton.setOnClickListener(new Button.OnClickListener() {
+			@Override
 			public void onClick(View v) {
-				isPlay = !isPlay;
-				if (isPlay) {
-					playKey(key.getCurrentItem() + 1);
-				}
+				dialog1.show();
+			}
+
+		});
+		AlertDialog.Builder builder2 = new AlertDialog.Builder(this); 
+
+		builder2.setTitle("Meter setting").setItems(meters, new DialogInterface.OnClickListener(){
+		public void onClick(DialogInterface dialog, int index) {
+				meter.setText(meters[index].toString());
 			}
 		});
+		
+		
+		
+		final AlertDialog dialog2 = builder2.create(); 
+		meter.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				dialog2.show();
+				
+			}
+			
+		});
+		playButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (isPlay) {
+					stopKey();
+				} else if (!isPlay) {
+					isPlay = true;
+				}
+				//s_manager.play(3);
+				playKey(keyText.getText().toString());
+			}
+
+		});
+
 		stopButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				isPlay = !isPlay;
-				if (!isPlay) {
-					stopKey(key.getCurrentItem() + 1);
+				if (isPlay == true) {
+					isPlay = false;
 				}
+				stopKey();
 			}
 		});
+
 	}
 
 	private void initSound() {
@@ -172,11 +233,61 @@ public class Set_key extends Activity {
 		s_manager.addSound(12, R.raw.g_key);
 	}
 
-	private void playKey(int key) {
-		s_manager.play(key);
+	private void playKey(String key) {
+		int keyNum=1;
+		if(key.equals("A"))
+		{
+			keyNum=4;
+		}
+		else if(key.equals("Ab"))
+		{
+			keyNum=9;
+		}
+		else if(key.equals("B"))
+		{
+			keyNum=6;
+		}
+		else if(key.equals("Bb"))
+		{
+			keyNum=13;
+		}
+		else if(key.equals("C"))
+		{
+			keyNum=1;
+		}
+		else if(key.equals("D"))
+		{
+			keyNum=3;
+		}
+		else if(key.equals("Db"))
+		{
+			keyNum=11;
+		}
+		else if(key.equals("E"))
+		{
+			keyNum=5;
+		}
+		else if(key.equals("Eb"))
+		{
+			keyNum=10;
+		}
+		else if(key.equals("F"))
+		{
+			keyNum=12;
+		}
+		else if(key.equals("F#"))
+		{
+			keyNum=7;
+		}
+		else if(key.equals("G"))
+		{
+			keyNum=2;
+		}
+
+		s_manager.play(keyNum);
 	}
 
-	private void stopKey(int key) {
+	private void stopKey() {
 		for (int i = 1; i < 13; i++) {
 			s_manager.stopSound(i);
 		}
@@ -232,7 +343,7 @@ public class Set_key extends Activity {
 
 			// ////////////
 			// /글자 크기////
-			setTextSize(nHeight / 100 * 5);
+			setTextSize(Main.nHeight * 5);
 			// ///////////
 		}
 
@@ -256,7 +367,7 @@ public class Set_key extends Activity {
 		super.onPause();
 		// Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
 		if (isPlay) {
-			stopKey(key.getCurrentItem() + 1);
+			stopKey();
 		}
 	}
 
@@ -264,7 +375,7 @@ public class Set_key extends Activity {
 		super.onStop();
 		// Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
 		if (isPlay) {
-			stopKey(key.getCurrentItem() + 1);
+			stopKey();
 		}
 	}
 
@@ -272,7 +383,7 @@ public class Set_key extends Activity {
 		super.onDestroy();
 		// Toast.makeText(this, "onDestory", Toast.LENGTH_SHORT).show();
 		if (isPlay) {
-			stopKey(key.getCurrentItem() + 1);
+			stopKey();
 		}
 	}
 }

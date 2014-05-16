@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" >
@@ -14,23 +15,10 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true" >
 
-            <LinearLayout
+            <kankan.wheel.widget.WheelView
+                android:id="@+id/quantizeWheel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="quantize" />
-
-                <kankan.wheel.widget.WheelView
-                    android:id="@+id/quantizeWheel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
+                android:layout_height="wrap_content" />
 
             <CheckBox
                 android:id="@+id/tripleCheckBox"
@@ -38,6 +26,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="triple" />
+
+            <ImageView
+                android:id="@+id/triple_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/triple_note"
+                android:layout_gravity="center_vertical"/>
+
         </LinearLayout>
     </RelativeLayout>
 

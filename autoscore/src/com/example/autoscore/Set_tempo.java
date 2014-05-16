@@ -1,5 +1,9 @@
 package com.example.autoscore;
 
+
+
+import kankan.wheel.widget.WheelView;
+import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -8,22 +12,25 @@ import android.os.PowerManager;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.NumberPicker.OnValueChangeListener;
 
 public class Set_tempo extends Activity {
-	int nHeight, nWidth;
 	PowerManager.WakeLock mWakeLock;
 	ImageButton playButton, stopButton;
 	TickPlayer tp;
 	NumberPicker tempo;
 	int curTempo = 120;
 	boolean mRunning = false;// 현재 메트로눔 재생중인가?
+	WheelView quantize;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +41,6 @@ public class Set_tempo extends Activity {
 		// metronomePlayButton = 플레이버튼
 		// ///////////////////////////////
 		super.onCreate(savedInstanceState);
-
 	}
 
 	// 1. 템포 최대 최소 정하기
@@ -51,16 +57,19 @@ public class Set_tempo extends Activity {
 		// metronumeText
 		// ///////////////////////////
 		mRunning = false;
-		playButton = (ImageButton) findViewById(R.id.metronomePlayButton);
-		stopButton = (ImageButton) findViewById(R.id.metronumeStopButton);
-		tempo = (NumberPicker) findViewById(R.id.tempoPicker);
-		Display display = ((WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		nHeight = display.getHeight();
-		nWidth = display.getWidth();
-		TextView metronumeText = (TextView) findViewById(R.id.metronumeText);
-		metronumeText.setTextSize(nHeight / 100 * 5);
-		metronumeText.setTextColor(Color.parseColor("#000000"));
+		playButton = (ImageButton) findViewById(R.id.metronome_play_button);
+		stopButton = (ImageButton) findViewById(R.id.metronume_stop_button);
+		tempo = (NumberPicker) findViewById(R.id.tempo_picker);
+
+		
+	//	metronumeText.setTextSize(Main.nHeight * 5);
+	//	metronumeText.setTextColor(Color.parseColor("#000000"));
+		quantize = (WheelView) findViewById(R.id.quantizeWheel);
+		//triple=(CheckBox)findViewById(R.id.tripleCheckBox);
+		//tripleImage=(ImageView)findViewById(R.id.triple_image);
+		
+		quantize.setVisibleItems(3);
+		quantize.setViewAdapter(new QuantizeAdapter(this));
 
 		// /////////////////////////////메트로눔
 		// 관련/////////////////////////////////////
@@ -80,12 +89,25 @@ public class Set_tempo extends Activity {
 		 * int newVal) { Toast.makeText(getApplicationContext(),"oldVal:" +
 		 * oldVal + ", newVal:" + newVal,Toast.LENGTH_SHORT).show(); } });
 		 */// numberPicker에서 바뀐값 확인할때 사용
+		quantize.setOnClickListener(new OnClickListener()
+		{
 
-		// ////numberpick 크기//////
-		tempo.setMinimumHeight(nHeight / 100 * 40);
-		tempo.setMinimumWidth(nWidth / 100 * 30);
-		// //////////
-
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "dd", Toast.LENGTH_SHORT);
+				
+			}
+			
+		});
+		
+		
+		//metronumeText.setPadding(0, 0, 0, Main.nHeight*10);
+		playButton.setPadding(Main.nHeight * 5, Main.nHeight * 5,
+				Main.nHeight * 5, Main.nHeight * 5);
+		stopButton.setPadding(Main.nHeight * 5, Main.nHeight * 5,
+				Main.nHeight * 5, Main.nHeight * 5);
+		tempo.setPadding(0,0,Main.nHeight*10,0);
+		
 		playButton.setOnClickListener(new OnClickListener() { // 플레이 버튼을 눌렀을 때
 					public void onClick(View v) {
 						mRunning = !mRunning;
@@ -107,6 +129,7 @@ public class Set_tempo extends Activity {
 				});
 	}
 
+	// /화면을 바꾸거나 종료시에 소리 종료///
 	protected void onPause() {
 		super.onPause();
 		// Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
@@ -131,7 +154,42 @@ public class Set_tempo extends Activity {
 		if (mRunning) {
 			mWakeLock.release();
 			tp.onStop();
+		}
+	}
 	
+	private class QuantizeAdapter extends AbstractWheelTextAdapter {
+		// Countries names
+		private String countries[] = new String[] { "2분음표", "ㅇ", "Ukraine",
+				"France" };
+		// Countries flags
+		private int flags[] = new int[] { R.drawable.note_2, R.drawable.note_4,
+				R.drawable.note_8, R.drawable.note_16 };
+
+		/**
+		 * Constructor
+		 */
+		protected QuantizeAdapter(Context context) {
+			super(context, R.layout.note_layout, NO_RESOURCE);
+		
+		//	setItemTextResource(R.id.metronume_text);
+		}
+
+		@Override
+		public View getItem(int index, View cachedView, ViewGroup parent) {
+			View view = super.getItem(index, cachedView, parent);
+			ImageView img = (ImageView) view.findViewById(R.id.note_imageview);
+			img.setImageResource(flags[index]);
+			return view;
+		}
+
+		@Override
+		public int getItemsCount() {
+			return countries.length;
+		}
+
+		@Override
+		protected CharSequence getItemText(int index) {
+			return countries[index];
 		}
 	}
 }

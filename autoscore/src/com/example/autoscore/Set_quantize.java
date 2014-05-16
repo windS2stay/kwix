@@ -1,16 +1,15 @@
 package com.example.autoscore;
 
 import kankan.wheel.widget.WheelView;
-import kankan.wheel.widget.adapters.ArrayWheelAdapter;
-import kankan.wheel.widget.adapters.NumericWheelAdapter;
+import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Set_quantize extends Activity {
@@ -20,8 +19,9 @@ public class Set_quantize extends Activity {
 	// metronumeText metronume이라고 써있는 textView
 	// metronomePlayButton = 플레이버튼
 	// ///////////////////////////////
-	int nHeight, nWidth;
-
+	WheelView quantize;
+	CheckBox triple;
+	ImageView tripleImage;
 	protected void onCreate(Bundle bun) {
 		super.onCreate(bun);
 		setContentView(R.layout.set_quantize);
@@ -35,83 +35,59 @@ public class Set_quantize extends Activity {
 
 	protected void onResume() {
 		super.onResume();
-		Display display = ((WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		nHeight = display.getHeight();
-		nWidth = display.getWidth();
 
-		final WheelView quantize = (WheelView) findViewById(R.id.quantizeWheel);
+		quantize = (WheelView) findViewById(R.id.quantizeWheel);
+		triple=(CheckBox)findViewById(R.id.tripleCheckBox);
+		tripleImage=(ImageView)findViewById(R.id.triple_image);
+		
+		quantize.setVisibleItems(3);
+		quantize.setViewAdapter(new QuantizeAdapter(this));
+		tripleImage.setMinimumHeight(Main.nHeight* 30);
+		tripleImage.setMinimumWidth(Main.nWidth* 30);
+		triple.setTextSize(Main.nHeight* 7);
+		triple.setTextColor(Color.parseColor("#000000"));
+		quantize.setPadding(0,0,Main.nHeight* 1000,0);
+		triple.setPadding(Main.nHeight* 10, Main.nHeight* 10, Main.nHeight* 10, Main.nHeight* 10);
 
-		String keys[] = new String[] { "4분음표", "8분음표", "다른음표" };
-		quantize.setViewAdapter(new QuantizeArrayAdapter(this, keys, 1));
-		quantize.setCurrentItem(0);
-		quantize.setMinimumHeight(nHeight / 100 * 40);
-		quantize.setMinimumWidth(nWidth / 100 * 30);
-	}
-
-	private class QuantizeWheelAdapter extends NumericWheelAdapter {
-		// Index of current item
-		int currentItem;
-		// Index of item to be highlighted
-		int currentValue;
-
-		/**
-		 * Constructor
-		 */
-		public QuantizeWheelAdapter(Context context, int minValue,
-				int maxValue, int current) {
-			super(context, minValue, maxValue);
-			this.currentValue = current;
-			setTextSize(16);
-		}
-
-		@Override
-		protected void configureTextView(TextView view) {
-			super.configureTextView(view);
-			if (currentItem == currentValue) {
-				view.setTextColor(0xFF0000F0);
-			}
-			view.setTypeface(Typeface.SANS_SERIF);
-		}
-
-		@Override
-		public View getItem(int index, View cachedView, ViewGroup parent) {
-			currentItem = index;
-			return super.getItem(index, cachedView, parent);
-		}
 	}
 
 	/**
-	 * Adapter for string based wheel. Highlights the current value.
+	 * Adapter for countries
 	 */
-	private class QuantizeArrayAdapter extends ArrayWheelAdapter<String> {
-		// Index of current item
-		int currentItem;
-		// Index of item to be highlighted
-		int currentValue;
+	private class QuantizeAdapter extends AbstractWheelTextAdapter {
+		// Countries names
+		private String countries[] = new String[] { "2분음표", "ㅇ", "Ukraine",
+				"France" };
+		// Countries flags
+		private int flags[] = new int[] { R.drawable.note_2, R.drawable.note_4,
+				R.drawable.note_8, R.drawable.note_16 };
 
 		/**
 		 * Constructor
 		 */
-		public QuantizeArrayAdapter(Context context, String[] items, int current) {
-			super(context, items);
-			this.currentValue = current;
-			setTextSize(16);
-		}
-
-		@Override
-		protected void configureTextView(TextView view) {
-			super.configureTextView(view);
-			if (currentItem == currentValue) {
-				view.setTextColor(0xFF0000F0);
-			}
-			view.setTypeface(Typeface.SANS_SERIF);
+		protected QuantizeAdapter(Context context) {
+			super(context, R.layout.note_layout, NO_RESOURCE);
+		
+		//	setItemTextResource(R.id.metronume_text);
 		}
 
 		@Override
 		public View getItem(int index, View cachedView, ViewGroup parent) {
-			currentItem = index;
-			return super.getItem(index, cachedView, parent);
+			View view = super.getItem(index, cachedView, parent);
+			ImageView img = (ImageView) view.findViewById(R.id.note_imageview);
+			img.setImageResource(flags[index]);
+			return view;
+		}
+
+		@Override
+		public int getItemsCount() {
+			return countries.length;
+		}
+
+		@Override
+		protected CharSequence getItemText(int index) {
+			return countries[index];
 		}
 	}
+
 }

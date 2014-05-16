@@ -14,32 +14,111 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true" >
 
-            <ImageView
-                android:id="@+id/keyNote"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/key_1" />
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
 
-            <kankan.wheel.widget.WheelView
-                android:id="@+id/keyWheel"
+                <ImageView
+                    android:id="@+id/key_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/key_1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true" >
+
+                    <ImageButton
+                        android:id="@+id/key_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:src="@drawable/play" />
+
+                    <ImageButton
+                        android:id="@+id/key_stop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:src="@drawable/stop" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                  android:id="@+id/other_linear"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
 
-            <ImageButton
-                android:id="@+id/keyPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/play" />
+                <LinearLayout
+                      android:id="@+id/linear1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true" >
 
-            <ImageButton
-                android:id="@+id/keyStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/stop" />
+                    <TextView
+                        android:id="@+id/meter_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="meter" />
 
+                    <TextView
+                        android:id="@+id/meter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                        android:text="3/4" />
+                </LinearLayout>
+
+                <LinearLayout
+                     android:id="@+id/linear2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true" >
+
+                    <TextView
+                        android:id="@+id/key_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                        android:text="key" />
+
+                    <TextView
+                        android:id="@+id/key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                        android:text="C" />
+                </LinearLayout>
+
+                <LinearLayout
+                     android:id="@+id/linear3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true" >
+
+                    <TextView
+                        android:id="@+id/score_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+       
+                         android:layout_gravity="center_vertical"
+                        android:text="score" />
+
+                    <TextView
+                        android:id="@+id/score"
+                         android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                 
+                        android:text="soee" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 

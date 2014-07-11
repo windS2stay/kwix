@@ -31,6 +31,8 @@ public class Main extends Activity {
 	Button developButton;
 	TextView title;
 	
+	public static Typeface face;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
@@ -38,11 +40,12 @@ public class Main extends Activity {
 		title = (TextView) findViewById(R.id.maintext);
 		startButton = (Button) findViewById(R.id.start_button);
 		useButton = (Button) findViewById(R.id.use_button);
-		developButton = (Button) findViewById(R.id.developers_button);
 		
-		Typeface face = Typeface.createFromAsset(getAssets(),
-				"fonts/nanumpen.ttf");
+		face = Typeface.createFromAsset(getAssets(),
+				"fonts/Daum_Regular.ttf");
 		title.setTypeface(face);
+		startButton.setTypeface(face);
+		useButton.setTypeface(face);
 
 	//////디스플레이 초기 설정//////	100으로 나눠줬
 		Display display = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -51,15 +54,17 @@ public class Main extends Activity {
 	/////////////////////////////////	
 	
 		
-		title.setTextSize(nHeight * 15);
-		startButton.setTextSize(nHeight *5);
-		useButton.setTextSize(nHeight * 5);
-		developButton.setTextSize(nHeight * 5);
+		title.setTextSize(nHeight * 10);
+		startButton.setTextSize(nHeight *4);
+		useButton.setTextSize(nHeight * 4);
 		//글씨 사이즈 변경
 		
 		title.setPadding(0,0,nWidth*5, 0);
-		
+	
+		//startButton.setMargins(Main.nHeight * 10, Main.nHeight * 30, Main.nHeight * 10, Main.nHeight * 30);
+		//useButton.setPadding(Main.nHeight * 10, Main.nHeight * 30, Main.nHeight * 10, Main.nHeight * 30);
 		///버튼 이벤트 
+		
 		
 		startButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
@@ -72,12 +77,6 @@ public class Main extends Activity {
 				useButton.setText("coming soon");
 			}
 		});
-		developButton.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				developButton.setText("coming soon");
-			}
-		});
-
 	
 
 	}

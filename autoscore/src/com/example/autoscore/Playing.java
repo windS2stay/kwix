@@ -1,9 +1,13 @@
 package com.example.autoscore;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.*;
-import android.content.*;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class Playing extends Setting{
 	String tempo;
@@ -23,6 +27,10 @@ public class Playing extends Setting{
 		tritext.setTypeface(face);
 		metrotext.setTypeface(face);
 		quantext.setTypeface(face);
+		
+		
+		
+
 		
 	/*EditText tempoedit = (EditText)findViewById(R.id.playtempoedit);		
 		Intent intent = getIntent();

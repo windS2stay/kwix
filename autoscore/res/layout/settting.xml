@@ -13,17 +13,19 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" >
+            android:orientation="horizontal" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="70dp"
                 android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" >
 
                     <TextView
                         android:id="@+id/set_tempo1"
@@ -45,33 +47,33 @@
                     android:text="`44" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true" >
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
                     <ImageButton
                         android:id="@+id/key_play"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
                         android:background="#00000000"
+                        android:scaleType="centerInside"
                         android:src="@drawable/play" />
 
                     <ImageButton
                         android:id="@+id/key_stop"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
                         android:background="#00000000"
+                        android:scaleType="centerInside"
                         android:src="@drawable/stop" />
                 </LinearLayout>
             </LinearLayout>
 
             <ScrollView
-                android:id="@+id/scrollView1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
+                android:layout_height="wrap_content"
+                android:id="@+id/setting_Scroll">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:orientation="vertical" >
@@ -81,8 +83,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp" >
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp" >
 
                         <TextView
                             android:id="@+id/meter_text"
@@ -94,6 +96,7 @@
                             android:id="@+id/meter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
                             android:text="4/4" />
                     </LinearLayout>
 
@@ -102,8 +105,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp" >
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp" >
 
                         <TextView
                             android:id="@+id/key_text"
@@ -123,8 +126,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp" >
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp" >
 
                         <TextView
                             android:id="@+id/tempo_text"
@@ -136,6 +139,7 @@
                             android:id="@+id/tempo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
                             android:text="120" />
                     </LinearLayout>
 
@@ -144,19 +148,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp" >
+                        android:layout_marginTop="7dp" >
 
                         <TextView
                             android:id="@+id/type_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="type " />
+                            android:text="type   " />
 
                         <TextView
                             android:id="@+id/type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
                             android:text="male" />
                     </LinearLayout>
 
@@ -164,22 +168,20 @@
                         android:id="@+id/quantizer_linear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp" >
+                        android:layout_centerVertical="true" >
 
                         <TextView
                             android:id="@+id/quantizer_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="quantize " />
+                            android:text="quantize   " />
 
                         <TextView
                             android:id="@+id/quantizer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center_vertical|right"
                             android:text="e" />
                     </LinearLayout>
 
@@ -187,38 +189,37 @@
                         android:id="@+id/triplet_linear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp" >
+                        android:layout_centerVertical="true" >
 
                         <TextView
                             android:id="@+id/triplet_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="triple " />
+                            android:layout_gravity="center_vertical"
+                            android:text="triple      " />
 
                         <TextView
                             android:id="@+id/triplet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="t" />
+                            android:layout_gravity="center_vertical|right"
+                            android:text="t  " />
 
                         <CheckBox
                             android:id="@+id/triplet_check"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right" />
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/next_button"
                         android:layout_width="100dp"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="right"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/title_btn"
-                        android:text="next"
-                        android:textColor="#FFFFFFFF" />
+                        android:background="@drawable/start_btn"
+                        android:textColor="#FF1F1D2A" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

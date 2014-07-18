@@ -71,8 +71,7 @@
         <ImageButton
             android:id="@+id/playpause"
             android:layout_gravity="center_horizontal"
-            android:layout_rowSpan="2"
-            android:src="@drawable/pause" />
+            android:layout_rowSpan="2"/>
 
         <ImageButton
             android:id="@+id/playstop"

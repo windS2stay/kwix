@@ -1,5 +1,10 @@
 package com.example.autoscore;
 
+import kankan.wheel.widget.OnWheelChangedListener;
+import kankan.wheel.widget.OnWheelClickedListener;
+import kankan.wheel.widget.OnWheelScrollListener;
+import kankan.wheel.widget.WheelView;
+import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,30 +25,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class Setting extends ActivityGroup {
+
+	// /////////////////
+	SettingData data = new SettingData();
+	// ///////////////
 
 	PowerManager.WakeLock mWakeLock;
 	TickPlayer tp;
 
 	ImageButton playButton, stopButton;
 
-	TextView set_note,set_tempo1,set_tempo2, key, meter, tempo, type, quantizer, triplet;
+	TextView set_note, set_tempo1, set_tempo2, key, meter, tempo, type,
+			quantizer, triplet;
 	TextView keyText, meterText, tempoText, typeText, quantizerText,
 			tripletText;
 	LinearLayout keyLinear, meterLinear, tempoLinear, typeLinear,
 			quantizerLinear, tripletLinear;
-
-	AlertDialog.Builder keyBuilder, meterBuilder, tempoBuilder, typeBuilder,
-			quantizerBuilder, tripletBuilder;
-	AlertDialog keyDialog, meterDialog, tempoDialog, typeDialog,
-			quantizerDialog, tripletDialog;
+	AlertDialog.Builder keyBuilder, typeBuilder;
+	AlertDialog keyDialog, typeDialog;
+	NumericWheelAdapter tempoNumericWheelAdapter;
+	Dialog quantizerDialog, tempoDialog, meterDialog;
 	SoundManager s_manager;
 	Button nextBtn;
 	CharSequence[] keys = { "A", "Ab", "B", "Bb", "C", "D", "Db", "E", "Eb",
 			"F", "F#", "G" };
-	CharSequence[] meters = { "3/4", "4/4", "6/8" };
-	CharSequence[] quantizers = { "q", "s", "e" };
+	TextView[] quantizers = new TextView[3];
+	TextView[] meters = new TextView[3];
+	TextView[] touchText = new TextView[4];
 	String[] scores = { "G", "?" };
 	int keyCount = 0;
 	String selectMeter = "4";
@@ -51,14 +60,17 @@ public class Setting extends ActivityGroup {
 	String selectKey1 = "";
 	String selectKey2 = "===========";
 	boolean mRunning = false;
+	OnClickArray handler = new OnClickArray(this);
+	WheelView tempoWheel;
 
 	Typeface note1, note2;
 
-	// 4媛���� ��≫�곕����곕�� 臾띠�댁＜��� ��〓����곕�� 洹�
+	int i = 0;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.set2);
-		
+		setContentView(R.layout.settting);
+
 		initSound();
 		noteSetting();
 		btnSetting();
@@ -66,64 +78,25 @@ public class Setting extends ActivityGroup {
 	}
 
 	void btnSetting() {
-		//////////////meter//////////////
-		meter.setOnTouchListener(new OnTouchListener(){
 
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				meter.setTextColor(Color.parseColor("#7A2F34"));
-				return false;
-			}
-			
-		});
-		meterBuilder = new AlertDialog.Builder(this);
+		for (i = 0; i < touchText.length; i++) {
+			touchText[i].setOnTouchListener(handler);
+		}
+		// ////////////meter//////////////
 
-		meterBuilder.setItems(meters, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int index) {
-
-				meter.setText(meters[index].toString());
-
-				switch (index) {
-				case 0: // 3/4'
-					selectMeter = "3";
-					break;
-				case 1:// 4/4
-					selectMeter = "4";
-					break;
-				case 2:// 6/8
-					selectMeter = "6";
-					break;
-				default:
-					break;
-				}
-
-				set_note.setText(selectScore + selectKey1 + selectMeter
-						+ selectKey2);
-				
-			}
-		});
-
-		meterDialog = meterBuilder.create();
 		meter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				meterDialog.show();
-				meter.setTextColor(Color.parseColor("#1F1D2A"));
+				meter.setTextColor(Color.parseColor("#FF1F1D2A"));
 			}
 		});
-		
-		
-	
-		// ////////////key//////////////////
-		key.setOnTouchListener(new OnTouchListener(){
+		for (i = 0; i < meters.length; i++) {
+			meters[i].setOnClickListener(handler);
+			meters[i].setOnTouchListener(handler);
+		}
 
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				key.setTextColor(Color.parseColor("#7A2F34"));
-				return false;
-			}
-			
-		});
+		// ////////////key//////////////////
 		keyBuilder = new AlertDialog.Builder(this);
 		keyBuilder.setItems(keys, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int index) {
@@ -209,7 +182,7 @@ public class Setting extends ActivityGroup {
 				}
 				set_note.setText(selectScore + selectKey1 + selectMeter
 						+ selectKey2);
-				
+
 			}
 		});
 		keyDialog = keyBuilder.create();
@@ -217,66 +190,36 @@ public class Setting extends ActivityGroup {
 			@Override
 			public void onClick(View v) {
 				keyDialog.show();
-				key.setTextColor(Color.parseColor("#1F1D2A"));
+				key.setTextColor(Color.parseColor("#FF1F1D2A"));
 			}
 		});
-		
-		////////////tempo////////////
-	
-		tempo.setOnTouchListener(new OnTouchListener(){
 
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				tempo.setTextColor(Color.parseColor("#7A2F34"));
-				return false;
-			}
-			
-		});
-		tempoBuilder = new AlertDialog.Builder(this);
-		tempoDialog = tempoBuilder.create();	
+		// //////////tempo////////////
+
 		tempo.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				tempoDialog.show();
+				tempo.setTextColor(Color.parseColor("#FF1F1D2A"));
 
-				//tempoDialog.show();
-				set_tempo2.setText("=130");
-				tempo.setTextColor(Color.parseColor("#1F1D2A"));
 			}
 		});
-		
-		
-		///////////quantizer///////////////
-		quantizer.setOnTouchListener(new OnTouchListener(){
 
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				quantizer.setTextColor(Color.parseColor("#7A2F34"));
-				return false;
-			}
-			
-		});
-
-		quantizerBuilder = new AlertDialog.Builder(this);
-		quantizerBuilder.setItems(quantizers,// //수정하
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						quantizer.setText(quantizers[id].toString());
-					}
-				});
-
-		quantizerDialog = quantizerBuilder.create();
+		// /////////quantizer///////////////
 
 		quantizer.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				quantizerDialog.show();
-				quantizer.setTextColor(Color.parseColor("#1F1D2A"));
 			}
 		});
 
-		/////////////////triple//////////////
+		for (i = 0; i < quantizers.length; i++) {
+			quantizers[i].setOnClickListener(handler);
+			quantizers[i].setOnTouchListener(handler);
+		}
 
+		// ///////////////triple//////////////
 
-		
 		playButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -287,7 +230,7 @@ public class Setting extends ActivityGroup {
 					mRunning = true;
 				}
 				playKey(key.getText().toString());
-						
+
 			}
 
 		});
@@ -300,10 +243,22 @@ public class Setting extends ActivityGroup {
 				stopKey();
 			}
 		});
-		
-		nextBtn.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){
-				tempo.setText("next");
+
+		nextBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				data.tempo = tempo.getText().toString();
+				data.type = type.getText().toString();
+				data.key = key.getText().toString();
+				data.triple = triplet.getText().toString();
+				data.quanizer = quantizer.getText().toString();
+				data.meter = meter.getText().toString();
+				Toast.makeText(
+						getApplicationContext(),
+						"tempo=" + data.tempo + "\ntype=" + data.type
+								+ "\nkey=" + data.key + "\ntriple="
+								+ data.triple + "\nquantizer=" + data.quanizer
+								+ "\nmeter=" + data.meter, 10).show();
+
 			}
 		});
 
@@ -317,13 +272,18 @@ public class Setting extends ActivityGroup {
 		set_note = (TextView) findViewById(R.id.set_note);
 		set_tempo1 = (TextView) findViewById(R.id.set_tempo1);
 		set_tempo2 = (TextView) findViewById(R.id.set_tempo2);
-		
+
 		key = (TextView) findViewById(R.id.key);
 		meter = (TextView) findViewById(R.id.meter);
 		tempo = (TextView) findViewById(R.id.tempo);
 		type = (TextView) findViewById(R.id.type);
 		quantizer = (TextView) findViewById(R.id.quantizer);
 		triplet = (TextView) findViewById(R.id.triplet);
+
+		touchText[0] = key;
+		touchText[1] = meter;
+		touchText[2] = tempo;
+		touchText[3] = type;
 
 		keyText = (TextView) findViewById(R.id.key_text);
 		meterText = (TextView) findViewById(R.id.meter_text);
@@ -342,11 +302,85 @@ public class Setting extends ActivityGroup {
 		playButton = (ImageButton) findViewById(R.id.key_play);
 		stopButton = (ImageButton) findViewById(R.id.key_stop);
 
-		nextBtn=(Button)findViewById(R.id.next_button);
-		// ////////////湲���� ��ш린////////////////////////
-		set_note.setTextSize(Main.nHeight * 10);
-		set_tempo1.setTextSize(Main.nHeight*4);
-		set_tempo2.setTextSize(Main.nHeight*2);
+		nextBtn = (Button) findViewById(R.id.next_button);
+
+		meterSetting();
+		quantizeSetting();
+		textSetting();
+		tempoDialogSetting();
+
+		// 왼쪽 위 오른쪽 아래
+		set_tempo1.setPadding(Main.nHeight * 8, Main.nHeight * 5, 0, 0);
+		set_tempo2.setPadding(0, Main.nHeight * 5, 0, 0);
+		playButton.setPadding(0, 0, Main.nHeight * 2, 0);
+		stopButton.setPadding(Main.nHeight * 2, 0, 0, 0);
+
+	}
+
+	void tempoDialogSetting() {
+		tempoDialog = new Dialog(Setting.this);
+		tempoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		tempoDialog.setContentView(R.layout.tempo_setting);
+
+		tempoWheel = (WheelView) tempoDialog.findViewById(R.id.tempo_wheel);
+		tempoNumericWheelAdapter = new NumericWheelAdapter(this, 0, 200);
+		tempoNumericWheelAdapter.setTextSize(Main.nHeight * 6);
+		tempoWheel.setViewAdapter(tempoNumericWheelAdapter);
+		tempoWheel.setCurrentItem(120);
+		tempoWheel.addClickingListener(new OnWheelClickedListener() {
+
+			@Override
+			public void onItemClicked(WheelView wheel, int itemIndex) {
+
+				// tempoNumericWheelAdapter.setTextColor(Color.parseColor("#FFbb4738"));
+				tempo.setText(Integer.toString(tempoWheel.getCurrentItem()));
+				set_tempo2.setText("="
+						+ Integer.toString(tempoWheel.getCurrentItem()));
+				tempoDialog.dismiss();
+			}
+
+		});
+	}
+
+	void meterSetting() {
+		meterDialog = new Dialog(Setting.this);
+		meterDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		meterDialog.setContentView(R.layout.meter_setting);
+
+		meters[0] = (TextView) meterDialog.findViewById(R.id.meter_34);
+		meters[1] = (TextView) meterDialog.findViewById(R.id.meter_44);
+		meters[2] = (TextView) meterDialog.findViewById(R.id.meter_68);
+
+		for (i = 0; i < meters.length; i++) {
+			meters[i].setTextSize(Main.nHeight * 15);
+			meters[i].setTypeface(note2);
+			meters[i].setTextColor(Color.parseColor("#FF1F1D2A"));
+		}
+	}
+
+	void quantizeSetting() {
+		quantizerDialog = new Dialog(Setting.this);
+		quantizerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		quantizerDialog.setContentView(R.layout.quantize_setting);
+
+		quantizers[0] = (TextView) quantizerDialog
+				.findViewById(R.id.quantize_16);
+		quantizers[1] = (TextView) quantizerDialog
+				.findViewById(R.id.quantize_8);
+		quantizers[2] = (TextView) quantizerDialog
+				.findViewById(R.id.quantize_4);
+
+		for (i = 0; i < quantizers.length; i++) {
+			quantizers[i].setTextSize(Main.nHeight * 15);
+			quantizers[i].setTypeface(note2);
+			quantizers[i].setTextColor(Color.parseColor("#FF1F1D2A"));
+		}
+	}
+
+	void textSetting() {
+		set_note.setTextSize(Main.nHeight * 15);
+		set_tempo1.setTextSize(Main.nHeight * 4);
+		set_tempo2.setTextSize(Main.nHeight * 2);
 		keyText.setTextSize(Main.nHeight * 3);
 		meterText.setTextSize(Main.nHeight * 3);
 		typeText.setTextSize(Main.nHeight * 3);
@@ -354,7 +388,7 @@ public class Setting extends ActivityGroup {
 		quantizerText.setTextSize(Main.nHeight * 3);
 		tripletText.setTextSize(Main.nHeight * 3);
 		nextBtn.setTextSize(Main.nHeight * 3);
-		
+
 		key.setTextSize(Main.nHeight * 3);
 		meter.setTextSize(Main.nHeight * 3);
 		type.setTextSize(Main.nHeight * 3);
@@ -366,21 +400,9 @@ public class Setting extends ActivityGroup {
 		selectScore = "&";
 		keyCount = 1;
 		set_note.setText(selectScore + selectKey1 + selectMeter + selectKey2);
-		set_tempo1.setText("e"); //임시
+		set_tempo1.setText("q"); // 임시
 		set_tempo2.setText("=120");
-
-		//왼쪽 위 오른쪽 아
-		set_tempo1.setPadding(Main.nHeight*15,Main.nHeight*5,0,0);
-		set_tempo2.setPadding(0,Main.nHeight*5,0,0);
-		set_note.setPadding(Main.nHeight * 10, 0, Main.nHeight * 5, 0);
-		keyLinear.setPadding(Main.nHeight * 5, 0, Main.nHeight * 10, 0);
-		meterLinear.setPadding(Main.nHeight * 5, 0, Main.nHeight * 10, 0);
-		tempoLinear.setPadding(Main.nHeight * 5, 0, Main.nHeight * 10, 0);
-		typeLinear.setPadding(Main.nHeight *5, 0, Main.nHeight * 10, 0);
-		quantizerLinear.setPadding(Main.nHeight * 5, 0, Main.nHeight * 10, 0);
-		tripletLinear.setPadding(Main.nHeight * 5, 0, Main.nHeight * 10,0);
-		nextBtn.setPadding(0, 0, Main.nHeight*10,0);
-
+		nextBtn.setText("Start");
 		Typeface face = Typeface.createFromAsset(getAssets(),
 				"fonts/Daum_Regular.ttf");
 
@@ -392,7 +414,7 @@ public class Setting extends ActivityGroup {
 		quantizerText.setTypeface(face);
 		tripletText.setTypeface(face);
 		nextBtn.setTypeface(face);
-		
+
 		key.setTypeface(face);
 		meter.setTypeface(face);
 		tempo.setTypeface(face);
@@ -403,24 +425,22 @@ public class Setting extends ActivityGroup {
 		quantizer.setTypeface(note2);
 		triplet.setTypeface(note2);
 
-		set_tempo1.setTextColor(Color.parseColor("#1F1D2A"));
-		set_tempo2.setTextColor(Color.parseColor("#1F1D2A"));
-		key.setTextColor(Color.parseColor("#1F1D2A"));
-		meter.setTextColor(Color.parseColor("#1F1D2A"));
-		tempo.setTextColor(Color.parseColor("#1F1D2A"));
-		type.setTextColor(Color.parseColor("#1F1D2A"));
-		quantizer.setTextColor(Color.parseColor("#1F1D2A"));
-		triplet.setTextColor(Color.parseColor("#1F1D2A"));
+		set_tempo1.setTextColor(Color.parseColor("#FF1F1D2A"));
+		set_tempo2.setTextColor(Color.parseColor("#FF1F1D2A"));
+		key.setTextColor(Color.parseColor("#FF1F1D2A"));
+		meter.setTextColor(Color.parseColor("#FF1F1D2A"));
+		tempo.setTextColor(Color.parseColor("#FF1F1D2A"));
+		type.setTextColor(Color.parseColor("#FF1F1D2A"));
+		quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
+		triplet.setTextColor(Color.parseColor("#FF1F1D2A"));
 
-		keyText.setTextColor(Color.parseColor("#1F1D2A"));
-		meterText.setTextColor(Color.parseColor("#1F1D2A"));
-		tempoText.setTextColor(Color.parseColor("#1F1D2A"));
-		typeText.setTextColor(Color.parseColor("#1F1D2A"));
-		quantizerText.setTextColor(Color.parseColor("#1F1D2A"));
-		tripletText.setTextColor(Color.parseColor("#1F1D2A"));
-
-		set_note.setTextColor(Color.parseColor("#1F1D2A"));		
-		
+		keyText.setTextColor(Color.parseColor("#FF1F1D2A"));
+		meterText.setTextColor(Color.parseColor("#FF1F1D2A"));
+		tempoText.setTextColor(Color.parseColor("#FF1F1D2A"));
+		typeText.setTextColor(Color.parseColor("#FF1F1D2A"));
+		quantizerText.setTextColor(Color.parseColor("#FF1F1D2A"));
+		tripletText.setTextColor(Color.parseColor("#FF1F1D2A"));
+		set_note.setTextColor(Color.parseColor("#FF1F1D2A"));
 	}
 
 	private void initSound() {
@@ -440,8 +460,8 @@ public class Setting extends ActivityGroup {
 		s_manager.addSound(10, R.raw.f_key);
 		s_manager.addSound(11, R.raw.fs_key);
 		s_manager.addSound(12, R.raw.g_key);
-		
-		///quantize setting//
+
+		// /quantize setting//
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
 				"MetronomeLock");
@@ -481,7 +501,7 @@ public class Setting extends ActivityGroup {
 		mWakeLock.acquire();
 		tp.onStart(-1, Integer.parseInt(tempo.getText().toString()));
 
-		//tempo.setText(Integer.toString(keyNum));
+		// tempo.setText(Integer.toString(keyNum));
 	}
 
 	private void stopKey() {
@@ -492,19 +512,41 @@ public class Setting extends ActivityGroup {
 		tp.onStop();
 	}
 
-}
+	private class OnClickArray implements OnClickListener, OnTouchListener {
+		private Setting activity;
 
-class CustomDialog extends Dialog implements OnClickListener {
-	public CustomDialog(Context context) {
-		super(context);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.custom_dialog1);
+		public OnClickArray(Setting activity) {
+			this.activity = activity;
+		}
 
-		// btn.setOnClickListener(this);
-	}
+		public boolean onTouch(View v, MotionEvent arg1) {
+			((TextView) v).setTextColor(Color.parseColor("#FFbb4738"));
+			return false;
+		}
 
-	public void onClick(View view) {
+		@Override
+		public void onClick(View v) {
+			if (v == quantizers[0] || v == quantizers[1] || v == quantizers[2]) {
+				quantizer.setText(((TextView) v).getText());
+				quantizerDialog.dismiss();
+			} else {
+				if (v == meters[0]) {
+					selectMeter = "3";
+					meter.setText("3/4");
+				} else if (v == meters[1]) {
+					selectMeter = "4";
+					meter.setText("4/4");
+				} else if (v == meters[2]) {
+					meter.setText("6/8");
+					selectMeter = "6";
+				}
+				set_note.setText(selectScore + selectKey1 + selectMeter
+						+ selectKey2);
+				meterDialog.dismiss();
 
-		dismiss();
+			}
+			((TextView) v).setTextColor(Color.parseColor("#FF1F1D2A"));
+
+		}
 	}
 }

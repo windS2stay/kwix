@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="9" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -26,42 +27,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="Setting"
+            android:name="com.example.autoscore.Setting"
             android:label="Setting"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="Playing"
+            android:name="com.example.autoscore.Playing"
             android:label="Playing"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="Set_key"
+            android:name="com.example.autoscore.Set_key"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
     >
         </activity>
         <activity
-            android:name="Set_meter"
+            android:name="com.example.autoscore.Set_meter"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
     >
         </activity>
         <activity
-            android:name="Set_quantize"
+            android:name="com.example.autoscore.Set_quantize"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
     >
         </activity>
         <activity
-            android:name="Set_tempo"
+            android:name="com.example.autoscore.Set_tempo"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
     >
         </activity>
-        <activity android:name="DateActivity"></activity>
+        <activity android:name="com.example.autoscore.DateActivity" >
+        </activity>
+        <activity
+            android:name="com.example.autoscore.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
 
 </manifest>

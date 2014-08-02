@@ -6,4 +6,5 @@ public class musicdata {
 	String tempo;
 	Boolean tri;
 	String[] quant = {"¢Û", "¢Ü"};
+	int version;
 }

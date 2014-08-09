@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -258,6 +259,8 @@ public class Setting extends ActivityGroup {
 								+ "\nkey=" + data.key + "\ntriple="
 								+ data.triple + "\nquantizer=" + data.quanizer
 								+ "\nmeter=" + data.meter, 10).show();
+				/*Intent intent = new Intent(getApplicationContext(), CustomView.class);				
+				startActivity(intent);*/
 
 			}
 		});

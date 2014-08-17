@@ -39,7 +39,7 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.example.autoscore.Scoremake"
+            android:name="com.example.autoscore.Scoremaker"
             android:label="Scoremake"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >

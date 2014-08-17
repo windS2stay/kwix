@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/background2" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Setting"
+            android:layout_weight="1"
+            android:layout_margin="5sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" 
+            android:layout_weight="5"
+            android:layout_marginTop="15sp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" 
+                android:layout_weight="10">
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/star_off" 
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/star_off" 
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/star_off" 
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/star_big_off" 
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <ToggleButton
+            android:id="@+id/metronome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="Metronome on "
+            android:textOn="Metronome off" 
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+            
+            <com.example.autoscore.CusView
+                 android:id="@+id/cusview"
+                 android:layout_width="3000dp"
+                 android:layout_height="match_parent" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

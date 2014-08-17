@@ -253,14 +253,14 @@ public class Setting extends ActivityGroup {
 				data.triple = triplet.getText().toString();
 				data.quanizer = quantizer.getText().toString();
 				data.meter = meter.getText().toString();
-				Toast.makeText(
+				/*Toast.makeText(
 						getApplicationContext(),
 						"tempo=" + data.tempo + "\ntype=" + data.type
 								+ "\nkey=" + data.key + "\ntriple="
 								+ data.triple + "\nquantizer=" + data.quanizer
-								+ "\nmeter=" + data.meter, 10).show();
-				/*Intent intent = new Intent(getApplicationContext(), CustomView.class);				
-				startActivity(intent);*/
+								+ "\nmeter=" + data.meter, 10).show();*/
+				Intent intent = new Intent(getApplicationContext(), Scoremaker.class);
+				startActivity(intent);
 
 			}
 		});

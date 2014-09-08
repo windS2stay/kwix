@@ -10,16 +10,16 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_margin="10sp"
-        android:useDefaultMargins="true"
+        android:layout_weight="1.4"
         android:columnCount="5"
         android:rowCount="3"
-        android:layout_weight="1.4" >
+        android:useDefaultMargins="true" >
 
         <TextView
             android:id="@+id/playtempo"
             android:layout_columnSpan="1"
-            android:gravity="center_vertical"
             android:layout_marginRight="20sp"
+            android:gravity="center_vertical"
             android:text="Tempo"
             android:textColor="#000000"
             android:textSize="30sp" />
@@ -37,61 +37,56 @@
         <TextView
             android:id="@+id/playmetronome"
             android:layout_columnSpan="2"
-            android:gravity="center_vertical"
             android:layout_marginLeft="150sp"
             android:layout_marginRight="20sp"
+            android:gravity="center_vertical"
+            android:text="Metronome"
             android:textColor="#000000"
-            android:textSize="30sp"
-            android:text="Metronome" />
+            android:textSize="30sp" />
 
         <ToggleButton
             android:id="@+id/metrotoggle"
             android:layout_columnSpan="1"
-            android:textOn="Check"
-            android:textOff="none" />
+            android:textOff="none"
+            android:textOn="Check" />
 
         <TextView
             android:id="@+id/playquan"
             android:layout_columnSpan="1"
             android:gravity="center_vertical"
+            android:text="Quantize"
             android:textColor="#000000"
-            android:textSize="30sp"
-            android:text="Quantize" />
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/playquansp"
             android:layout_columnSpan="1"
             tools:listitem="@android:layout/simple_spinner_item" />
 
-        <ImageButton
-            android:id="@+id/playstart"
-            android:layout_rowSpan="2"
-            android:src="@drawable/play" />
+      
 
         <ImageButton
             android:id="@+id/playpause"
             android:layout_gravity="center_horizontal"
-            android:layout_rowSpan="2"/>
+            android:layout_rowSpan="2" />
 
         <ImageButton
             android:id="@+id/playstop"
-			android:layout_rowSpan="2"
-            android:src="@drawable/stop" />
+            android:layout_rowSpan="2" />
 
         <TextView
             android:id="@+id/playtri"
             android:layout_columnSpan="1"
             android:gravity="center_vertical"
+            android:text="Triple"
             android:textColor="#000000"
-            android:textSize="30sp"
-            android:text="Triple" />
+            android:textSize="30sp" />
 
         <ToggleButton
             android:id="@+id/playtritoggle"
             android:layout_columnSpan="1"
-            android:textOn="Check"
-            android:textOff="none" />
-
+            android:textOff="none"
+            android:textOn="Check" />
     </GridLayout>
 
     <LinearLayout

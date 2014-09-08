@@ -97,54 +97,6 @@ public class Main extends Activity {
 		//글씨색
 		startButton.setTextColor(Color.parseColor("#FFFFFFFF"));
 		useButton.setTextColor(Color.parseColor("#FFFFFFFF"));
-		
-		
-		
-		
-		// ////디스플레이 초기 설정////// 100으로 나눠줬
-
-		/*
-		 * DisplayMetrics displayMetrics = new DisplayMetrics();
-		 * getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		 * 
-		 * nHeight = displayMetrics.widthPixels / 100; nWidth =
-		 * displayMetrics.heightPixels / 100;
-		 * 
-		 * title = (TextView) findViewById(R.id.maintext); startButton =
-		 * (Button) findViewById(R.id.start_button); useButton = (Button)
-		 * findViewById(R.id.use_button);
-		 * 
-		 * face = Typeface.createFromAsset(getAssets(),
-		 * "fonts/Daum_Regular.ttf"); title.setTypeface(face);
-		 * 
-		 * title.setTextSize(TypedValue.COMPLEX_UNIT_SP, nHeight * 10);
-		 * //startButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, nHeight * 2);
-		 * //useButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, nHeight * 2);
-		 * startButton.setTextSize(nHeight * 4); useButton.setTextSize(nHeight *
-		 * 4); //useButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, nHeight *
-		 * 4);
-		 * 
-		 * //title.setTextAppearance(getBaseContext(), R.style.mainText2);
-		 * //startButton.setTextAppearance(getBaseContext(), R.style.mainText1);
-		 * //useButton.setTextAppearance(getBaseContext(), R.style.mainText1);
-		 * 
-		 * startButton.setTypeface(face); useButton.setTypeface(face);
-		 * 
-		 * //title.setPadding(0, 0, nWidth * 5, 0);
-		 * 
-		 * //btnSize = new LinearLayout.LayoutParams(nWidth * 70, nHeight * 15);
-		 * //btnSize.setMargins(0, 0, 0, nHeight * 5);
-		 * 
-		 * //startButton.setLayoutParams(btnSize);
-		 * //useButton.setLayoutParams(btnSize);
-		 * startButton.setOnClickListener(new Button.OnClickListener() { public
-		 * void onClick(View v) { Intent intent = new Intent(Main.this,
-		 * Setting.class); startActivity(intent); } });
-		 * useButton.setOnClickListener(new Button.OnClickListener() { public
-		 * void onClick(View v) {
-		 * 
-		 * } });
-		 */
 
 	}
 

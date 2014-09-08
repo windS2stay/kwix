@@ -97,7 +97,7 @@ public class Setting extends Activity {
 		}
 
 		/////nextBtn setting//////
-		mSL.addView(nextBtn, 530f, 330f, 117f, 38f);
+	
 		nextBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -301,13 +301,15 @@ public class Setting extends Activity {
 
 	void noteSetting() {
 
+		////Layout settting////
 		setttingBG = new RelativeLayout(this);
 		setttingBG.setBackgroundResource(R.drawable.background2);
 		setContentView(setttingBG);
 
 		mSL = new ScalableLayout(this, 640, 400); // 화면 사이즈 640*400
 		setttingBG.addView(mSL);
-
+		
+		//// View create////
 		set_note = new TextView(this); // 악보 Textveiw
 		set_tempo1 = new TextView(this); // 악보 바로위에 음표
 		set_tempo2 = new TextView(this); // 뭐지 숫
@@ -336,8 +338,8 @@ public class Setting extends Activity {
 		touchText[3] = quantizer;
 		touchText[4] = type;
 
-		textSetting();
-		meterSetting();
+		textSetting(); //text size, location, color
+		meterSetting(); 
 		quantizeSetting();
 		tempoDialogSetting();
 		typeDialogSetting();
@@ -446,7 +448,7 @@ public class Setting extends Activity {
 
 	void textSetting() {
 
-		// 글씨
+		////font face
 		note2 = Typeface.createFromAsset(getAssets(), "fonts/MusiSync.ttf");
 		note1 = Typeface.createFromAsset(getAssets(), "fonts/MusiQwikB.ttf");
 		selectMeter = "4";//
@@ -471,10 +473,13 @@ public class Setting extends Activity {
 		tripletText.setText("triple");
 
 		nextBtn.setText("start");
+		
 		nextBtn.setBackgroundResource(R.drawable.start_btn);
 		playButton.setBackgroundResource(R.drawable.play_off);
 		stopButton.setBackgroundResource(R.drawable.stop_off);
+		
 
+		mSL.addView(nextBtn, 530f, 330f, 130f, 40f);
 		mSL.addView(playButton, 130f, 250f, 56f, 39f);
 		mSL.addView(stopButton, 200f, 250f, 56f, 39f);
 
@@ -482,7 +487,7 @@ public class Setting extends Activity {
 		mSL.addView(set_tempo1, 90f, 60f, 100f, 50f); // 4분음
 		mSL.addView(set_tempo2, 110f, 80f, 100f, 30f);
 
-		// 위치지
+		// 위치 지
 		mSL.addView(key, 530f, 50f, 100f, 50f);
 		mSL.addView(meter, 530f, 95f, 100f, 50f);
 		mSL.addView(tempo, 530f, 140f, 100f, 50f);
@@ -516,7 +521,7 @@ public class Setting extends Activity {
 		mSL.setScale_TextSize(typeText, 22f);
 		mSL.setScale_TextSize(tripletText, 22f);
 
-		mSL.setScale_TextSize(nextBtn, 2f);
+		mSL.setScale_TextSize(nextBtn, 22f);
 
 		Typeface face = Typeface.createFromAsset(getAssets(),
 				"fonts/Daum_Regular.ttf");
@@ -651,12 +656,15 @@ public class Setting extends Activity {
 				if (v == meters[0]) {
 					selectMeter = "3";
 					meter.setText("3/4");
+					set_tempo1.setText("q");
 				} else if (v == meters[1]) {
 					selectMeter = "4";
 					meter.setText("4/4");
+					set_tempo1.setText("q");
 				} else if (v == meters[2]) {
 					meter.setText("6/8");
 					selectMeter = "6";
+					set_tempo1.setText("e");
 				}
 				set_note.setText(selectScore + selectKey1 + selectMeter
 						+ selectKey2);

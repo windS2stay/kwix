@@ -71,7 +71,7 @@
         <activity android:name="com.example.autoscore.DateActivity" >
         </activity>
         <activity
-            android:name="com.example.autoscore.MainActivity"
+            android:name="com.example.autoscore.Editpage"
             android:label="@string/title_activity_main" >
         </activity>
         

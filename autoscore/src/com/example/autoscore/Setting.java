@@ -21,10 +21,10 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-//재생 수정 ,type수정 , tempo 휠수
+//type수정 , tempo 휠수
 public class Setting extends Activity {
 
 	private static final String DebugTag = "ScalableLayout_TestAndroid";
@@ -43,8 +43,8 @@ public class Setting extends Activity {
 	PowerManager.WakeLock mWakeLock;
 	TickPlayer tp;
 
-	Button playButton, stopButton;
-	Button nextBtn;
+	ImageButton playButton, stopButton;
+	ImageButton nextBtn;
 
 	TextView set_note, set_tempo1, set_tempo2, key, meter, tempo, type,
 			quantizer, triplet;
@@ -97,6 +97,17 @@ public class Setting extends Activity {
 		}
 
 		/////nextBtn setting//////
+		
+		nextBtn.setOnTouchListener(new Button.OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				nextBtn.setBackgroundResource(R.drawable.next_off);
+				return false;
+			}
+			
+		});
 	
 		nextBtn.setOnClickListener(new OnClickListener() {
 
@@ -119,8 +130,8 @@ public class Setting extends Activity {
 					//stopKey();
 				} else if (!mRunning) {
 					mRunning = true;
-					playButton.setBackgroundResource(R.drawable.play_on);
-					stopButton.setBackgroundResource(R.drawable.stop_off);
+					playButton.setBackgroundResource(R.drawable.play_off);
+					stopButton.setBackgroundResource(R.drawable.stop_on);
 					playKey(key.getText().toString());
 				}
 			}
@@ -134,7 +145,7 @@ public class Setting extends Activity {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				stopButton.setBackgroundResource(R.drawable.stop_on);
+				stopButton.setBackgroundResource(R.drawable.stop_off);
 				return false;
 			}
 			
@@ -142,8 +153,8 @@ public class Setting extends Activity {
 		stopButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				if (mRunning == true) {
-					playButton.setBackgroundResource(R.drawable.play_off);
-					stopButton.setBackgroundResource(R.drawable.stop_off);
+					playButton.setBackgroundResource(R.drawable.play_on);
+					stopButton.setBackgroundResource(R.drawable.stop_on);
 					mRunning = false;
 					stopKey();
 				}
@@ -328,9 +339,9 @@ public class Setting extends Activity {
 		tripletText = new TextView(this);
 		tripleCheck = new CheckBox(this);
 
-		playButton = new Button(this);
-		stopButton = new Button(this);
-		nextBtn = new Button(this);
+		playButton = new ImageButton(this);
+		stopButton = new ImageButton(this);
+		nextBtn = new ImageButton(this);
 
 		touchText[0] = key;
 		touchText[1] = meter;
@@ -472,14 +483,14 @@ public class Setting extends Activity {
 		quantizerText.setText("quantize");
 		tripletText.setText("triple");
 
-		nextBtn.setText("start");
+		//nextBtn.setText("start");
 		
-		nextBtn.setBackgroundResource(R.drawable.start_btn);
-		playButton.setBackgroundResource(R.drawable.play_off);
-		stopButton.setBackgroundResource(R.drawable.stop_off);
+		nextBtn.setBackgroundResource(R.drawable.next_on2);
+		playButton.setBackgroundResource(R.drawable.play_on);
+		stopButton.setBackgroundResource(R.drawable.stop_on);
 		
 
-		mSL.addView(nextBtn, 530f, 330f, 130f, 40f);
+		mSL.addView(nextBtn, 590f, 330f,38f, 37f);
 		mSL.addView(playButton, 130f, 250f, 56f, 39f);
 		mSL.addView(stopButton, 200f, 250f, 56f, 39f);
 
@@ -521,7 +532,7 @@ public class Setting extends Activity {
 		mSL.setScale_TextSize(typeText, 22f);
 		mSL.setScale_TextSize(tripletText, 22f);
 
-		mSL.setScale_TextSize(nextBtn, 22f);
+		//mSL.setScale_TextSize(nextBtn, 22f);
 
 		Typeface face = Typeface.createFromAsset(getAssets(),
 				"fonts/Daum_Regular.ttf");
@@ -543,7 +554,7 @@ public class Setting extends Activity {
 		tripletText.setTextColor(Color.parseColor("#FF1F1D2A"));
 		set_note.setTextColor(Color.parseColor("#FF1F1D2A"));
 
-		nextBtn.setTextColor(Color.parseColor("#FF1F1D2A"));
+		//nextBtn.setTextColor(Color.parseColor("#FF1F1D2A"));
 
 		set_tempo2.setTypeface(face);
 		keyText.setTypeface(face);
@@ -557,7 +568,7 @@ public class Setting extends Activity {
 		meter.setTypeface(face);
 		tempo.setTypeface(face);
 		type.setTypeface(face);
-		nextBtn.setTypeface(face);
+		//nextBtn.setTypeface(face);
 
 		set_note.setTypeface(note1);
 		set_tempo1.setTypeface(note2);

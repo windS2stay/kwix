@@ -860,7 +860,6 @@ public class Scoremaker extends Activity {
 //		          mPopupWindow.update(anchor, xoff, yoff, width, height)(width, height);
 				//settingDialog.show();
 				//
-
 				/*
 				 * noteScroll = new HorizontalScrollView(this);
 				 * mSL.addView(noteScroll, 15f, 300f, 1240f, 300f); // 수정하기
@@ -873,7 +872,6 @@ public class Scoremaker extends Activity {
 				 * test.setTextSize(140);
 				 */
 				// TODO Auto-generated method stub
-
 			}
 
 		});

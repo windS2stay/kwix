@@ -9,6 +9,78 @@ package com.example.autoscore;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_base_height=0x7f010001;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_base_width=0x7f010000;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_height=0x7f010006;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_left=0x7f010004;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_textsize=0x7f010002;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_top=0x7f010003;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int scale_width=0x7f010005;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textview_wrapcontent_direction=0x7f010007;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textview_wrapcontent_resizesurrounded=0x7f010008;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -21,19 +93,83 @@ public final class R {
         public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
-        public static final int background1=0x7f020000;
-        public static final int background2=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int layout_bg=0x7f020003;
-        public static final int play=0x7f020004;
-        public static final int start_btn=0x7f020005;
-        public static final int stop=0x7f020006;
-        public static final int title_btn=0x7f020007;
-        public static final int wheel_bg=0x7f020008;
-        public static final int wheel_val=0x7f020009;
+        public static final int apply=0x7f020000;
+        public static final int background1=0x7f020001;
+        public static final int background2=0x7f020002;
+        public static final int btn_rec_none=0x7f020003;
+        public static final int btn_rec_off=0x7f020004;
+        public static final int btn_rec_on=0x7f020005;
+        public static final int delete=0x7f020006;
+        public static final int edit_mode_off=0x7f020007;
+        public static final int edit_mode_on=0x7f020008;
+        public static final int export_off=0x7f020009;
+        public static final int export_on=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
+        public static final int layout_bg=0x7f02000c;
+        public static final int metro_big_ing=0x7f02000d;
+        public static final int metro_big_on=0x7f02000e;
+        public static final int metro_off=0x7f02000f;
+        public static final int metro_on=0x7f020010;
+        public static final int metro_small_ing=0x7f020011;
+        public static final int metro_small_on=0x7f020012;
+        public static final int next_off=0x7f020013;
+        public static final int next_on=0x7f020014;
+        public static final int next_on2=0x7f020015;
+        public static final int note_16_non=0x7f020016;
+        public static final int note_16_sel=0x7f020017;
+        public static final int note_1_non=0x7f020018;
+        public static final int note_1_sel=0x7f020019;
+        public static final int note_2_non=0x7f02001a;
+        public static final int note_2_sel=0x7f02001b;
+        public static final int note_4_non=0x7f02001c;
+        public static final int note_4_sel=0x7f02001d;
+        public static final int note_8_non=0x7f02001e;
+        public static final int note_8_sel=0x7f02001f;
+        public static final int option=0x7f020020;
+        public static final int p3_2_back=0x7f020021;
+        public static final int p4_back=0x7f020022;
+        public static final int pause_off=0x7f020023;
+        public static final int pause_on=0x7f020024;
+        public static final int play=0x7f020025;
+        public static final int play_off=0x7f020026;
+        public static final int play_on=0x7f020027;
+        public static final int pre_off=0x7f020028;
+        public static final int pre_on=0x7f020029;
+        public static final int pre_on2=0x7f02002a;
+        public static final int recode_on=0x7f02002b;
+        public static final int recode_sel=0x7f02002c;
+        public static final int rest_16_non=0x7f02002d;
+        public static final int rest_16_sel=0x7f02002e;
+        public static final int rest_1_non=0x7f02002f;
+        public static final int rest_1_sel=0x7f020030;
+        public static final int rest_2_non=0x7f020031;
+        public static final int rest_2_sel=0x7f020032;
+        public static final int rest_4_non=0x7f020033;
+        public static final int rest_4_sel=0x7f020034;
+        public static final int rest_8_non=0x7f020035;
+        public static final int rest_8_sel=0x7f020036;
+        public static final int sign_dot_non=0x7f020037;
+        public static final int sign_dot_sel=0x7f020038;
+        public static final int sign_flat_non=0x7f020039;
+        public static final int sign_flat_sel=0x7f02003a;
+        public static final int sign_natural_non=0x7f02003b;
+        public static final int sign_natural_sel=0x7f02003c;
+        public static final int sign_sharp_non=0x7f02003d;
+        public static final int sign_sharp_sel=0x7f02003e;
+        public static final int sign_triple_non=0x7f02003f;
+        public static final int sign_triple_sel=0x7f020040;
+        public static final int start_btn=0x7f020041;
+        public static final int stop=0x7f020042;
+        public static final int stop_off=0x7f020043;
+        public static final int stop_on=0x7f020044;
+        public static final int title_btn=0x7f020045;
+        public static final int warning=0x7f020046;
+        public static final int wheel_bg=0x7f020047;
+        public static final int wheel_val=0x7f020048;
     }
     public static final class id {
-        public static final int action_settings=0x7f090053;
+        public static final int aaa=0x7f090037;
+        public static final int action_settings=0x7f090054;
         public static final int button1=0x7f09000f;
         public static final int button2=0x7f090010;
         public static final int customview=0x7f09002f;
@@ -57,19 +193,19 @@ public final class R {
         public static final int imageView2=0x7f090032;
         public static final int imageView3=0x7f090033;
         public static final int imageView4=0x7f090034;
-        public static final int key=0x7f090043;
-        public static final int key_linear=0x7f090041;
-        public static final int key_play=0x7f09003b;
-        public static final int key_stop=0x7f09003c;
-        public static final int key_text=0x7f090042;
+        public static final int key=0x7f090044;
+        public static final int key_linear=0x7f090042;
+        public static final int key_play=0x7f09003c;
+        public static final int key_stop=0x7f09003d;
+        public static final int key_text=0x7f090043;
         public static final int linearLayout1=0x7f090000;
         public static final int maintext=0x7f090013;
-        public static final int meter=0x7f090040;
+        public static final int meter=0x7f090041;
         public static final int meter_34=0x7f090016;
         public static final int meter_44=0x7f090017;
         public static final int meter_68=0x7f090018;
-        public static final int meter_linear=0x7f09003e;
-        public static final int meter_text=0x7f09003f;
+        public static final int meter_linear=0x7f09003f;
+        public static final int meter_text=0x7f090040;
         public static final int metro4=0x7f09002d;
         public static final int metron1=0x7f09002a;
         public static final int metron2=0x7f09002b;
@@ -77,7 +213,7 @@ public final class R {
         public static final int metronome=0x7f090035;
         public static final int metronometgl=0x7f09002e;
         public static final int metrotoggle=0x7f09001e;
-        public static final int next_button=0x7f090051;
+        public static final int next_button=0x7f090052;
         public static final int note_imageview=0x7f09001a;
         public static final int note_layout=0x7f090019;
         public static final int playmetronome=0x7f09001d;
@@ -93,29 +229,29 @@ public final class R {
         public static final int quantize_16=0x7f090028;
         public static final int quantize_4=0x7f090026;
         public static final int quantize_8=0x7f090027;
-        public static final int quantizer=0x7f09004c;
-        public static final int quantizer_linear=0x7f09004a;
-        public static final int quantizer_text=0x7f09004b;
-        public static final int relativeLayout1=0x7f090037;
+        public static final int quantizer=0x7f09004d;
+        public static final int quantizer_linear=0x7f09004b;
+        public static final int quantizer_text=0x7f09004c;
+        public static final int relativeLayout1=0x7f090038;
         public static final int scoreview=0x7f090012;
-        public static final int set_note=0x7f09003a;
-        public static final int set_tempo1=0x7f090038;
-        public static final int set_tempo2=0x7f090039;
+        public static final int set_note=0x7f09003b;
+        public static final int set_tempo1=0x7f090039;
+        public static final int set_tempo2=0x7f09003a;
         public static final int setting=0x7f090030;
-        public static final int setting_Scroll=0x7f09003d;
+        public static final int setting_Scroll=0x7f09003e;
         public static final int setup=0x7f090029;
         public static final int start_button=0x7f090014;
-        public static final int tempo=0x7f090046;
-        public static final int tempo_linear=0x7f090044;
-        public static final int tempo_text=0x7f090045;
-        public static final int tempo_wheel=0x7f090052;
-        public static final int triplet=0x7f09004f;
-        public static final int triplet_check=0x7f090050;
-        public static final int triplet_linear=0x7f09004d;
-        public static final int triplet_text=0x7f09004e;
-        public static final int type=0x7f090049;
-        public static final int type_linear=0x7f090047;
-        public static final int type_text=0x7f090048;
+        public static final int tempo=0x7f090047;
+        public static final int tempo_linear=0x7f090045;
+        public static final int tempo_text=0x7f090046;
+        public static final int tempo_wheel=0x7f090053;
+        public static final int triplet=0x7f090050;
+        public static final int triplet_check=0x7f090051;
+        public static final int triplet_linear=0x7f09004e;
+        public static final int triplet_text=0x7f09004f;
+        public static final int type=0x7f09004a;
+        public static final int type_linear=0x7f090048;
+        public static final int type_text=0x7f090049;
         public static final int use_button=0x7f090015;
     }
     public static final class layout {
@@ -127,8 +263,9 @@ public final class R {
         public static final int quantize_setting=0x7f030005;
         public static final int score=0x7f030006;
         public static final int scoremake=0x7f030007;
-        public static final int settting=0x7f030008;
-        public static final int tempo_setting=0x7f030009;
+        public static final int scoremaker_setting=0x7f030008;
+        public static final int settting=0x7f030009;
+        public static final int tempo_setting=0x7f03000a;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -183,4 +320,193 @@ public final class R {
          */
         public static final int AppTheme=0x7f070001;
     }
+    public static final class styleable {
+        /**  
+    <declare-styleable name="Carousel">
+        <attr name="android:gravity" /> 
+
+        <attr name="android:animationDuration" />
+
+        <attr name="UseReflection" format="boolean"/>
+
+        <attr name="Items" format="integer"/>
+
+        <attr name="SelectedItem" format="integer"/>
+
+        <attr name="maxTheta" format="float"/>
+
+        <attr name="minQuantity" format="integer"/>
+
+        <attr name="maxQuantity" format="integer"/>
+
+        <attr name="Names" format="string" />
+
+    </declare-styleable>    
+	<declare-styleable name="ScaledLayout">
+		<attr name="scale_textsize" format="boolean" />
+		<attr name="scale_width" 	format="boolean" />
+		<attr name="scale_height" 	format="string" />
+	</declare-styleable>  
+	<declare-styleable name="ScaledLayout">
+		<attr name="ScaleWidth" 	format="float" />
+		<attr name="ScaleHeight" 	format="float" />
+	</declare-styleable>  
+     
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_base_height com.example.autoscore:scale_base_height}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_base_width com.example.autoscore:scale_base_width}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_height com.example.autoscore:scale_height}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_left com.example.autoscore:scale_left}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_textsize com.example.autoscore:scale_textsize}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_top com.example.autoscore:scale_top}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_scale_width com.example.autoscore:scale_width}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_textview_wrapcontent_direction com.example.autoscore:textview_wrapcontent_direction}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScalableLayout_textview_wrapcontent_resizesurrounded com.example.autoscore:textview_wrapcontent_resizesurrounded}</code></td><td></td></tr>
+           </table>
+           @see #ScalableLayout_scale_base_height
+           @see #ScalableLayout_scale_base_width
+           @see #ScalableLayout_scale_height
+           @see #ScalableLayout_scale_left
+           @see #ScalableLayout_scale_textsize
+           @see #ScalableLayout_scale_top
+           @see #ScalableLayout_scale_width
+           @see #ScalableLayout_textview_wrapcontent_direction
+           @see #ScalableLayout_textview_wrapcontent_resizesurrounded
+         */
+        public static final int[] ScalableLayout = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007,
+            0x7f010008
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_base_height}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_base_height
+        */
+        public static final int ScalableLayout_scale_base_height = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_base_width}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_base_width
+        */
+        public static final int ScalableLayout_scale_base_width = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_height}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_height
+        */
+        public static final int ScalableLayout_scale_height = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_left}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_left
+        */
+        public static final int ScalableLayout_scale_left = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_textsize}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_textsize
+        */
+        public static final int ScalableLayout_scale_textsize = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_top}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_top
+        */
+        public static final int ScalableLayout_scale_top = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#scale_width}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:scale_width
+        */
+        public static final int ScalableLayout_scale_width = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#textview_wrapcontent_direction}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:textview_wrapcontent_direction
+        */
+        public static final int ScalableLayout_textview_wrapcontent_direction = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.example.autoscore.R.attr#textview_wrapcontent_resizesurrounded}
+          attribute's value can be found in the {@link #ScalableLayout} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.autoscore:textview_wrapcontent_resizesurrounded
+        */
+        public static final int ScalableLayout_textview_wrapcontent_resizesurrounded = 8;
+    };
 }

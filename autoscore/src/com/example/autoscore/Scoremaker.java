@@ -814,10 +814,10 @@ public class Scoremaker extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				settingButton.setBackgroundResource(R.drawable.option); // TODO
-																		// Auto-generated
-																		// meth
-																		// //
-																		// stub
+					  													// Auto-generated
+																// meth
+									 									// //
+				 			    											// stub
 				
 				
 				return false;

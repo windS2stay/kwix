@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 //type수정 , tempo 휠수
 public class Setting extends Activity {
 
@@ -33,12 +35,12 @@ public class Setting extends Activity {
 		Log.e(DebugTag, "MainActivity] " + pLog);
 	}
 
-	private ScalableLayout mSL; 
+	private ScalableLayout mSL;
 	RelativeLayout setttingBG;
 
-	///////////////////
+	// /////////////////
 	SettingData data = new SettingData();
-	/////////////////
+	// ///////////////
 
 	PowerManager.WakeLock mWakeLock;
 	TickPlayer tp;
@@ -84,21 +86,21 @@ public class Setting extends Activity {
 		// setContentView(R.layout.main);
 		ScalableLayout.setLoggable(DebugTag);
 
-		initSound(); // sound 
+		initSound(); // sound
 		noteSetting(); // btn location,color,size, dialog... etc setting
 		btnSetting(); // btn event setting
 
 	}
 
 	void btnSetting() {
-	/////Text Click color change setting//////
+		// ///Text Click color change setting//////
 		for (i = 0; i < touchText.length; i++) {
-			touchText[i].setOnTouchListener(handler); //c
+			touchText[i].setOnTouchListener(handler); // c
 		}
 
-		/////nextBtn setting//////
-		
-		nextBtn.setOnTouchListener(new Button.OnTouchListener(){
+		// ///nextBtn setting//////
+
+		nextBtn.setOnTouchListener(new Button.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -106,9 +108,9 @@ public class Setting extends Activity {
 				nextBtn.setBackgroundResource(R.drawable.next_off);
 				return false;
 			}
-			
+
 		});
-	
+
 		nextBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -120,14 +122,14 @@ public class Setting extends Activity {
 
 		});
 
-		////// playButton setting ///////
+		// //// playButton setting ///////
 
 		playButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (mRunning) {
-					//stopKey();
+					// stopKey();
 				} else if (!mRunning) {
 					mRunning = true;
 					playButton.setBackgroundResource(R.drawable.play_off);
@@ -137,10 +139,10 @@ public class Setting extends Activity {
 			}
 
 		});
-		
-		///// stopButton setting////
-		
-		stopButton.setOnTouchListener(new Button.OnTouchListener(){
+
+		// /// stopButton setting////
+
+		stopButton.setOnTouchListener(new Button.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -148,7 +150,7 @@ public class Setting extends Activity {
 				stopButton.setBackgroundResource(R.drawable.stop_off);
 				return false;
 			}
-			
+
 		});
 		stopButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
@@ -158,11 +160,11 @@ public class Setting extends Activity {
 					mRunning = false;
 					stopKey();
 				}
-				
+
 			}
 		});
 
-		//////////////meter event setting//////////////
+		// ////////////meter event setting//////////////
 
 		meter.setOnClickListener(new OnClickListener() {
 			@Override
@@ -175,8 +177,8 @@ public class Setting extends Activity {
 			meters[i].setOnClickListener(handler);
 			meters[i].setOnTouchListener(handler);
 		}
-
-		///////////////key event setting//////////////////
+		meterDialog.setCanceledOnTouchOutside(true);
+		// /////////////key event setting//////////////////
 		keyBuilder = new AlertDialog.Builder(this);
 		keyBuilder.setItems(keys, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int index) {
@@ -274,7 +276,7 @@ public class Setting extends Activity {
 			}
 		});
 
-		////////////tempo event setting////////////
+		// //////////tempo event setting////////////
 
 		tempo.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -283,23 +285,29 @@ public class Setting extends Activity {
 
 			}
 		});
+
+		tempoDialog.setCanceledOnTouchOutside(true);
 		// 타입정
 		// ////type/////////
-		/*
-		 * type.setOnClickListener(new OnClickListener() { public void
-		 * onClick(View v) { typeDialog.show();
-		 * type.setTextColor(Color.parseColor("#FF1F1D2A"));
-		 * 
-		 * } }); for (i = 0; i < types.length; i++) {
-		 * types[i].setOnClickListener(handler);
-		 * types[i].setOnTouchListener(handler); }
-		 */
-		///////////quantizer event setting///////////////
+
+		type.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				//typeDialog.show();
+				type.setTextColor(Color.parseColor("#FF1F1D2A"));
+
+			}
+		});/*
+			 * for (i = 0; i < types.length; i++) {
+			 * types[i].setOnClickListener(handler);
+			 * types[i].setOnTouchListener(handler); }
+			 */
+		// /////////quantizer event setting///////////////
 
 		quantizer.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				quantizerDialog.show();
+				quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
 			}
 		});
 
@@ -308,19 +316,21 @@ public class Setting extends Activity {
 			quantizers[i].setOnTouchListener(handler);
 		}
 
+		quantizerDialog.setCanceledOnTouchOutside(true);
+
 	}
 
 	void noteSetting() {
 
-		////Layout settting////
+		// //Layout settting////
 		setttingBG = new RelativeLayout(this);
 		setttingBG.setBackgroundResource(R.drawable.background2);
 		setContentView(setttingBG);
 
 		mSL = new ScalableLayout(this, 640, 400); // 화면 사이즈 640*400
 		setttingBG.addView(mSL);
-		
-		//// View create////
+
+		// // View create////
 		set_note = new TextView(this); // 악보 Textveiw
 		set_tempo1 = new TextView(this); // 악보 바로위에 음표
 		set_tempo2 = new TextView(this); // 뭐지 숫
@@ -349,8 +359,8 @@ public class Setting extends Activity {
 		touchText[3] = quantizer;
 		touchText[4] = type;
 
-		textSetting(); //text size, location, color
-		meterSetting(); 
+		textSetting(); // text size, location, color
+		meterSetting();
 		quantizeSetting();
 		tempoDialogSetting();
 		typeDialogSetting();
@@ -459,7 +469,7 @@ public class Setting extends Activity {
 
 	void textSetting() {
 
-		////font face
+		// //font face
 		note2 = Typeface.createFromAsset(getAssets(), "fonts/MusiSync.ttf");
 		note1 = Typeface.createFromAsset(getAssets(), "fonts/MusiQwikB.ttf");
 		selectMeter = "4";//
@@ -483,14 +493,13 @@ public class Setting extends Activity {
 		quantizerText.setText("quantize");
 		tripletText.setText("triple");
 
-		//nextBtn.setText("start");
-		
+		// nextBtn.setText("start");
+
 		nextBtn.setBackgroundResource(R.drawable.next_on2);
 		playButton.setBackgroundResource(R.drawable.play_on);
 		stopButton.setBackgroundResource(R.drawable.stop_on);
-		
 
-		mSL.addView(nextBtn, 590f, 330f,38f, 37f);
+		mSL.addView(nextBtn, 590f, 330f, 38f, 37f);
 		mSL.addView(playButton, 130f, 250f, 56f, 39f);
 		mSL.addView(stopButton, 200f, 250f, 56f, 39f);
 
@@ -512,7 +521,7 @@ public class Setting extends Activity {
 		mSL.addView(quantizerText, 400f, 185f, 150f, 50f);
 		mSL.addView(typeText, 400f, 230f, 100f, 50f);
 		mSL.addView(tripletText, 400f, 275f, 100f, 50f);
-		mSL.addView(tripleCheck,545f,275f,25f,25f);
+		mSL.addView(tripleCheck, 545f, 275f, 25f, 25f);
 
 		// 사이즈 조
 		mSL.setScale_TextSize(set_note, 70f);// 큰악보
@@ -532,7 +541,7 @@ public class Setting extends Activity {
 		mSL.setScale_TextSize(typeText, 22f);
 		mSL.setScale_TextSize(tripletText, 22f);
 
-		//mSL.setScale_TextSize(nextBtn, 22f);
+		// mSL.setScale_TextSize(nextBtn, 22f);
 
 		Typeface face = Typeface.createFromAsset(getAssets(),
 				"fonts/Daum_Regular.ttf");
@@ -554,7 +563,7 @@ public class Setting extends Activity {
 		tripletText.setTextColor(Color.parseColor("#FF1F1D2A"));
 		set_note.setTextColor(Color.parseColor("#FF1F1D2A"));
 
-		//nextBtn.setTextColor(Color.parseColor("#FF1F1D2A"));
+		// nextBtn.setTextColor(Color.parseColor("#FF1F1D2A"));
 
 		set_tempo2.setTypeface(face);
 		keyText.setTypeface(face);
@@ -568,7 +577,7 @@ public class Setting extends Activity {
 		meter.setTypeface(face);
 		tempo.setTypeface(face);
 		type.setTypeface(face);
-		//nextBtn.setTypeface(face);
+		// nextBtn.setTypeface(face);
 
 		set_note.setTypeface(note1);
 		set_tempo1.setTypeface(note2);

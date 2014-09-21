@@ -77,7 +77,8 @@ public class Main extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				useButton.setText("coming soon");
+				Intent intent =  new Intent(getBaseContext(),HowToUse.class);
+				startActivity(intent);
 
 			}
 		});

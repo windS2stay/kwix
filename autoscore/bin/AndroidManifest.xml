@@ -44,36 +44,13 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
-        <activity
-            android:name="com.example.autoscore.Set_key"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-    >
-        </activity>
-        <activity
-            android:name="com.example.autoscore.Set_meter"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-    >
-        </activity>
-        <activity
-            android:name="com.example.autoscore.Set_quantize"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-    >
-        </activity>
-        <activity
-            android:name="com.example.autoscore.Set_tempo"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-    >
-        </activity>
         <activity android:name="com.example.autoscore.DateActivity" >
         </activity>
         <activity
             android:name="com.example.autoscore.Editpage"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity android:name="HowToUse"></activity>
         
     </application>
 

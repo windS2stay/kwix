@@ -3,14 +3,15 @@ package com.example.autoscore;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -31,7 +32,7 @@ public class Scoremaker extends Activity {
 	ImageButton deleteButton, applyButton;
 	Dialog settingDialog;
 	Typeface note;
-	Boolean recordMode = true;
+	Boolean recordMode = true,metroOn=true;;
 	int playState;
 
 	final int nothing = 0;
@@ -42,6 +43,7 @@ public class Scoremaker extends Activity {
 	// 삭제할것
 	SoundManager s_manager;
 	TextView test;
+	public static final int REQUEST_CODE_ANOTHER = 1001;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +53,14 @@ public class Scoremaker extends Activity {
 		scoremakerBG = new RelativeLayout(this);
 		// scoremakerBG.setBackgroundResource(R.drawable.p3_2_back);
 		setContentView(scoremakerBG);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+		scoremakerBG.setBackgroundColor(Color.parseColor("#FFfcfcec"));
 
 		mSL = new ScalableLayout(this, 1280, 800);
 		mSL.setBackgroundResource(R.drawable.p3_2_back);
 
-		scoremakerBG.addView(mSL);
+		scoremakerBG.addView(mSL,params);
 
 		noteScroll = new HorizontalScrollView(this);
 		mSL.addView(noteScroll, 15f, 300f, 1240f, 300f); // 수정하기
@@ -89,7 +94,7 @@ public class Scoremaker extends Activity {
 		deleteButton = new ImageButton(this);
 		applyButton = new ImageButton(this);
 
-		metronomeButton.setBackgroundResource(R.drawable.metro_off);
+		metronomeButton.setBackgroundResource(R.drawable.metro_on);
 		playButton.setBackgroundResource(R.drawable.play_on);
 		pauseButton.setBackgroundResource(R.drawable.pause_on);
 		stopButton.setBackgroundResource(R.drawable.stop_on);
@@ -98,8 +103,8 @@ public class Scoremaker extends Activity {
 		backButton.setBackgroundResource(R.drawable.pre_on);
 		settingButton.setBackgroundResource(R.drawable.option);
 		stateButton.setBackgroundResource(R.drawable.recode_on);
-		deleteButton.setBackgroundResource(R.drawable.delete);
-		applyButton.setBackgroundResource(R.drawable.apply);
+		deleteButton.setBackgroundResource(R.drawable.delete_on);
+		applyButton.setBackgroundResource(R.drawable.apply_on);
 
 		notes[0].setBackgroundResource(R.drawable.note_1_non);
 		notes[1].setBackgroundResource(R.drawable.note_2_non);
@@ -145,6 +150,11 @@ public class Scoremaker extends Activity {
 
 		// ///////////////////////////////
 
+		Intent receivedItent = getIntent();
+		// 현재 액티비티를 띄우기 위해 생성한 인텐트 안에 넣은 부가 데이터 가져오기
+		String receivedString = receivedItent.getStringExtra("startCount");
+		Toast.makeText(getBaseContext(), receivedString, 10).show();
+
 		stateButtonSetting();
 		playButtonSetting();
 		stopButtonSetting();
@@ -154,7 +164,19 @@ public class Scoremaker extends Activity {
 		editButtonTouchSetting();
 		deleteButtonSetting();
 		settingButtonSetting();
+		applyButtonSetting();
+		metroButtonSetting();
 		// /////setting Button setting////
+
+		backButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+
+		});
 
 		exportButton.setOnClickListener(new OnClickListener() {
 
@@ -176,7 +198,7 @@ public class Scoremaker extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (recordMode == false) {
+				if (recordMode == false) { // 수기모드 -> 녹음모
 					stateButton.setBackgroundResource(R.drawable.recode_on);
 					mSL.setBackgroundResource(R.drawable.p3_2_back);
 					recordButton.setBackgroundResource(R.drawable.btn_rec_on);
@@ -193,7 +215,7 @@ public class Scoremaker extends Activity {
 					mSL.removeView(applyButton);
 					recordMode = true;
 
-				} else {
+				} else {// 녹음모드 -> 수기모드
 
 					stateButton.setBackgroundResource(R.drawable.edit_mode_on);
 					mSL.setBackgroundResource(R.drawable.p4_back);
@@ -231,9 +253,9 @@ public class Scoremaker extends Activity {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (recordMode == false) {
+				if (recordMode == false) { // 수기모드
 					stateButton.setBackgroundResource(R.drawable.edit_mode_off);
-				} else {
+				} else {// 녹음모드
 
 					stateButton.setBackgroundResource(R.drawable.recode_sel);
 				}
@@ -256,7 +278,8 @@ public class Scoremaker extends Activity {
 					playButton.setBackgroundResource(R.drawable.play_off);
 					pauseButton.setBackgroundResource(R.drawable.pause_on);
 					stopButton.setBackgroundResource(R.drawable.stop_on);
-					recordButton.setBackgroundResource(R.drawable.btn_rec_on);
+					recordButton.setBackgroundResource(R.drawable.btn_rec_none);
+					// 녹음 비활성화 버튼추가하
 				}
 			}
 
@@ -298,7 +321,7 @@ public class Scoremaker extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (recordMode == true) {
+				if (recordMode == false) { // 녹음모드...?
 
 					Toast.makeText(getBaseContext(), "녹음 NO  수기모드. ", 10)
 							.show();
@@ -306,8 +329,28 @@ public class Scoremaker extends Activity {
 					// recordMode = true;
 				} else {
 
-					recordButton.setBackgroundResource(R.drawable.btn_rec_on);
-					Toast.makeText(getBaseContext(), "녹음완료. ", 10).show();
+					if (playState == recording) { // 녹음
+						playState = nothing;
+						recordButton
+								.setBackgroundResource(R.drawable.btn_rec_on);
+						stopButton.setBackgroundResource(R.drawable.stop_on);
+						playButton.setBackgroundResource(R.drawable.play_on);
+						pauseButton.setBackgroundResource(R.drawable.pause_on);
+
+						Toast.makeText(getBaseContext(), "녹음  ", 10).show();
+
+					} else { // 녹음시
+						playState = recording;
+						recordButton
+								.setBackgroundResource(R.drawable.btn_rec_off);
+						stopButton.setBackgroundResource(R.drawable.stop_none);
+						playButton.setBackgroundResource(R.drawable.play_none);
+						pauseButton
+								.setBackgroundResource(R.drawable.pause_none);
+
+						Toast.makeText(getBaseContext(), "녹음시. ", 10).show();
+
+					}
 
 					// recordMode = false;
 
@@ -785,7 +828,18 @@ public class Scoremaker extends Activity {
 				signs[2].setBackgroundResource(R.drawable.sign_flat_non);
 				signs[3].setBackgroundResource(R.drawable.sign_dot_non);
 				signs[4].setBackgroundResource(R.drawable.sign_triple_non);
+				deleteButton.setBackgroundResource(R.drawable.delete_on);
 
+			}
+
+		});
+
+		deleteButton.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				deleteButton.setBackgroundResource(R.drawable.delete_off);
+				return false;
 			}
 
 		});
@@ -794,32 +848,32 @@ public class Scoremaker extends Activity {
 	PopupWindow mPopupWindow;
 
 	void settingButtonSetting() {
-		/*settingDialog = new Dialog(Scoremaker.this);
-		settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		settingDialog.setContentView(R.layout.scoremaker_setting);
-		android.view.WindowManager.LayoutParams params = settingDialog.getWindow().getAttributes();
-		params.width = 3000;//LayoutParams.MATCH_PARENT;
-		params.height = LayoutParams.MATCH_PARENT;
-		settingDialog.getWindow().setAttributes(
-				(android.view.WindowManager.LayoutParams) params);
-		//settingDialog.getWindow().setGravity(Gravity.BOTTOM);
-
-		sSL = new ScalableLayout(getBaseContext(), 500, 500);
-		RelativeLayout a = (RelativeLayout) findViewById(R.id.aaa);
-*
-		// a.addView(swSL);
-		// /////setting Button setting////*/
+		/*
+		 * settingDialog = new Dialog(Scoremaker.this);
+		 * settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		 * settingDialog.setContentView(R.layout.scoremaker_setting);
+		 * android.view.WindowManager.LayoutParams params =
+		 * settingDialog.getWindow().getAttributes(); params.width =
+		 * 3000;//LayoutParams.MATCH_PARENT; params.height =
+		 * LayoutParams.MATCH_PARENT; settingDialog.getWindow().setAttributes(
+		 * (android.view.WindowManager.LayoutParams) params);
+		 * //settingDialog.getWindow().setGravity(Gravity.BOTTOM);
+		 * 
+		 * sSL = new ScalableLayout(getBaseContext(), 500, 500); RelativeLayout
+		 * a = (RelativeLayout) findViewById(R.id.aaa);
+		 * 
+		 * // a.addView(swSL); // /////setting Button setting////
+		 */
 		settingButton.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				settingButton.setBackgroundResource(R.drawable.option); // TODO
-					  													// Auto-generated
-																// meth
-									 									// //
-				 			    											// stub
-				
-				
+																		// Auto-generated
+				// meth
+				// //
+				// stub
+
 				return false;
 			}
 
@@ -831,34 +885,35 @@ public class Scoremaker extends Activity {
 			public void onClick(View v) {
 				Toast.makeText(getBaseContext(), "setting", 10).show();
 
-				   View popupView = getLayoutInflater().inflate(R.layout.scoremaker_setting, null);
-				   
-		            mPopupWindow = new PopupWindow(popupView,
-		                    LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		 
-		            /**
-		             * PopupWindow Show 메서드
-		             * showAsDropDown(anchor, xoff, yoff)
-		             * @View anchor : anchor View를 기준으로 PopupWindow 표시 (상,하)
-		             * PopupWindow가 최대한 화면에 표시되도록 시스템이 설정해 준다.
-		             * xoff, yoff : anchor View를 기준으로 PopupWindow를 표시된것을
-		             * 기준으로 xoff는 x좌표, yoff는 y좌표 만큼 이동 한다.
-		             * @int xoff : -숫자(화면 왼쪽으로 이동), +숫자(화면 오른쪽으로 이동)
-		             * @int yoff : -숫자(화면 위쪽으로 이동), +숫자(화면 아래쪽으로 이동)
-		             * achor View 를 덮는 것도 가능
-		             * 화면바깥 좌우, 위아래로 이동 가능 (짤린 상태로 표시됨)
-		             */
-		            mPopupWindow.setAnimationStyle(-1); // 애니메이션 설정(-1:설정안함, 0:설정)
-		            //mPopupWindow.showAsDropDown(btn_Popup, 50, 50);
-		             
-		            /**
-		             * update() 메서드를 통해 PopupWindow의 좌우 사이즈, x좌표, y좌표
-		             * anchor View까지 재설정 해줄수 있습니다.
-		             */
-		            
-		            mPopupWindow.update(100, 100);
-//		          mPopupWindow.update(anchor, xoff, yoff, width, height)(width, height);
-				//settingDialog.show();
+				View popupView = getLayoutInflater().inflate(
+						R.layout.scoremaker_setting, null);
+
+				mPopupWindow = new PopupWindow(popupView,
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+				/**
+				 * PopupWindow Show 메서드 showAsDropDown(anchor, xoff, yoff)
+				 * 
+				 * @View anchor : anchor View를 기준으로 PopupWindow 표시 (상,하)
+				 *       PopupWindow가 최대한 화면에 표시되도록 시스템이 설정해 준다. xoff, yoff :
+				 *       anchor View를 기준으로 PopupWindow를 표시된것을 기준으로 xoff는 x좌표,
+				 *       yoff는 y좌표 만큼 이동 한다.
+				 * @int xoff : -숫자(화면 왼쪽으로 이동), +숫자(화면 오른쪽으로 이동)
+				 * @int yoff : -숫자(화면 위쪽으로 이동), +숫자(화면 아래쪽으로 이동) achor View 를 덮는
+				 *      것도 가능 화면바깥 좌우, 위아래로 이동 가능 (짤린 상태로 표시됨)
+				 */
+				mPopupWindow.setAnimationStyle(-1); // 애니메이션 설정(-1:설정안함, 0:설정)
+				// mPopupWindow.showAsDropDown(btn_Popup, 50, 50);
+
+				/**
+				 * update() 메서드를 통해 PopupWindow의 좌우 사이즈, x좌표, y좌표 anchor View까지
+				 * 재설정 해줄수 있습니다.
+				 */
+
+				mPopupWindow.update(100, 100);
+				// mPopupWindow.update(anchor, xoff, yoff, width, height)(width,
+				// height);
+				// settingDialog.show();
 				//
 				/*
 				 * noteScroll = new HorizontalScrollView(this);
@@ -875,5 +930,76 @@ public class Scoremaker extends Activity {
 			}
 
 		});
+	}
+
+	void applyButtonSetting() {
+
+		applyButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				applyButton.setBackgroundResource(R.drawable.apply_on);
+			}
+
+		});
+		applyButton.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				applyButton.setBackgroundResource(R.drawable.apply_off);
+
+				return recordMode;
+			}
+
+		});
+
+	}
+	
+	void metroButtonSetting(){
+		
+	
+		metronomeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//applyButton.setBackgroundResource(R.drawable.apply_on);
+				
+				metronomeButton.setBackgroundResource(R.drawable.metro_off);
+				if(metroOn==true)
+				{
+					metroOn=false;
+					metronomeButton.setBackgroundResource(R.drawable.metro_on);
+				}
+				else
+				{
+					metroOn=true;
+					metronomeButton.setBackgroundResource(R.drawable.metro_off);
+				}
+			}
+
+		});
+		metronomeButton.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				//applyButton.setBackgroundResource(R.drawable.apply_off);
+
+				return recordMode;
+			}
+
+		});
+
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODE_ANOTHER) {
+			Toast.makeText(getBaseContext(), "ㅁ", 10).show();
+
+		} else {
+			Toast.makeText(getBaseContext(), "", 10).show();
+		}
 	}
 }

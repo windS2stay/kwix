@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -19,12 +18,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //type수정 , tempo 휠수
 public class Setting extends Activity {
@@ -48,8 +51,9 @@ public class Setting extends Activity {
 	ImageButton playButton, stopButton;
 	ImageButton nextBtn;
 
-	TextView set_note, set_tempo1, set_tempo2, key, meter, tempo, type,
-			quantizer, triplet;
+	TextView set_note, set_tempo1, set_tempo2, key, meter, tempo, quantizer,
+			triplet;
+	ImageView type;
 	TextView keyText, meterText, tempoText, typeText, quantizerText,
 			tripletText;
 	AlertDialog.Builder keyBuilder, typeBuilder;
@@ -63,8 +67,8 @@ public class Setting extends Activity {
 			"F", "F#", "G" };
 	TextView[] quantizers = new TextView[3];
 	TextView[] meters = new TextView[3];
-	TextView[] touchText = new TextView[5];
-	TextView[] types = new TextView[4];
+	TextView[] touchText = new TextView[4];
+	ImageView[] types = new ImageView[4];
 	String[] scores = { "G", "?" };
 	int keyCount = 0;
 	String selectMeter = "4";
@@ -75,7 +79,7 @@ public class Setting extends Activity {
 	OnClickArray handler = new OnClickArray(this);
 	WheelView tempoWheel;
 	Typeface note1, note2;
-
+	public static final int REQUEST_CODE_ANOTHER = 1001;
 	int i = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,16 +99,14 @@ public class Setting extends Activity {
 	void btnSetting() {
 		// ///Text Click color change setting//////
 		for (i = 0; i < touchText.length; i++) {
-			touchText[i].setOnTouchListener(handler); // c
+			touchText[i].setOnTouchListener(handler);
 		}
 
 		// ///nextBtn setting//////
-
 		nextBtn.setOnTouchListener(new Button.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
 				nextBtn.setBackgroundResource(R.drawable.next_off);
 				return false;
 			}
@@ -115,14 +117,22 @@ public class Setting extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				if (mRunning) {
+					stopKey();
+				}
 				Intent intent = new Intent(Setting.this, Scoremaker.class);
-				startActivity(intent);
+
+				// 설정값 넘기기기기기
+				intent.putExtra("startCount", String.valueOf("statCount"));
+				intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				nextBtn.setBackgroundResource(R.drawable.next_on2);
+				startActivityForResult(intent, REQUEST_CODE_ANOTHER);
 
 			}
 
 		});
 
-		// //// playButton setting ///////
+		// /// playButton setting ///////
 
 		playButton.setOnClickListener(new OnClickListener() {
 
@@ -147,7 +157,9 @@ public class Setting extends Activity {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				stopButton.setBackgroundResource(R.drawable.stop_off);
+				if (mRunning == true) {
+					stopButton.setBackgroundResource(R.drawable.stop_off);
+				}
 				return false;
 			}
 
@@ -155,8 +167,6 @@ public class Setting extends Activity {
 		stopButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				if (mRunning == true) {
-					playButton.setBackgroundResource(R.drawable.play_on);
-					stopButton.setBackgroundResource(R.drawable.stop_on);
 					mRunning = false;
 					stopKey();
 				}
@@ -169,6 +179,9 @@ public class Setting extends Activity {
 		meter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (mRunning) {
+					stopKey();
+				}
 				meterDialog.show();
 				meter.setTextColor(Color.parseColor("#FF1F1D2A"));
 			}
@@ -271,6 +284,9 @@ public class Setting extends Activity {
 		key.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (mRunning) {
+					stopKey();
+				}
 				keyDialog.show();
 				key.setTextColor(Color.parseColor("#FF1F1D2A"));
 			}
@@ -280,6 +296,9 @@ public class Setting extends Activity {
 
 		tempo.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				if (mRunning) {
+					stopKey();
+				}
 				tempoDialog.show();
 				tempo.setTextColor(Color.parseColor("#FF1F1D2A"));
 
@@ -292,20 +311,23 @@ public class Setting extends Activity {
 
 		type.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//typeDialog.show();
-				type.setTextColor(Color.parseColor("#FF1F1D2A"));
+				if (mRunning) {
+					stopKey();
+				}
+				typeDialog.show();
+				// type.setTextColor(Color.parseColor("#FF1F1D2A"));
 
 			}
-		});/*
-			 * for (i = 0; i < types.length; i++) {
-			 * types[i].setOnClickListener(handler);
-			 * types[i].setOnTouchListener(handler); }
-			 */
+		});
+		typeDialog.setCanceledOnTouchOutside(true);
 		// /////////quantizer event setting///////////////
 
 		quantizer.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (mRunning) {
+					stopKey();
+				}
 				quantizerDialog.show();
 				quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
 			}
@@ -322,13 +344,20 @@ public class Setting extends Activity {
 
 	void noteSetting() {
 
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+
 		// //Layout settting////
 		setttingBG = new RelativeLayout(this);
-		setttingBG.setBackgroundResource(R.drawable.background2);
-		setContentView(setttingBG);
+		// setttingBG.setBackgroundResource(R.drawable.background2);
 
+		setContentView(setttingBG);
+		setttingBG.setBackgroundColor(Color.parseColor("#FFfcfcec"));
 		mSL = new ScalableLayout(this, 640, 400); // 화면 사이즈 640*400
-		setttingBG.addView(mSL);
+		mSL.setBackgroundResource(R.drawable.background2);
+		setttingBG.addView(mSL, params);
 
 		// // View create////
 		set_note = new TextView(this); // 악보 Textveiw
@@ -337,7 +366,7 @@ public class Setting extends Activity {
 		key = new TextView(this);
 		meter = new TextView(this);
 		tempo = new TextView(this);
-		type = new TextView(this);
+		type = new ImageView(this);
 		quantizer = new TextView(this);
 		triplet = new TextView(this);
 
@@ -357,7 +386,7 @@ public class Setting extends Activity {
 		touchText[1] = meter;
 		touchText[2] = tempo;
 		touchText[3] = quantizer;
-		touchText[4] = type;
+		// touchText[4] = type;
 
 		textSetting(); // text size, location, color
 		meterSetting();
@@ -368,24 +397,35 @@ public class Setting extends Activity {
 	}
 
 	void typeDialogSetting() {
-		/*
-		 * typeDialog = new Dialog(Setting.this);
-		 * typeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		 * typeDialog.setContentView(R.layout.aaa);
-		 * 
-		 * Typeface note3; note3 = Typeface.createFromAsset(getAssets(),
-		 * "fonts/flaticon.ttf");
-		 * 
-		 * types[0] = (TextView) typeDialog.findViewById(R.id.male_icon);
-		 * types[1] = (TextView) typeDialog.findViewById(R.id.female_icon);
-		 * types[2] = (TextView) typeDialog.findViewById(R.id.piano_icon);
-		 * types[3] = (TextView)
-		 * typeDialog.findViewById(R.id.chordophones_icon);
-		 * 
-		 * for (i = 0; i < types.length; i++) {
-		 * types[i].setTextSize(Main.nHeight * 15); types[i].setTypeface(note3);
-		 * }
-		 */
+
+		typeDialog = new Dialog(Setting.this);
+		typeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		typeDialog.setContentView(R.layout.type_setting);
+
+		types[0] = (ImageView) typeDialog.findViewById(R.id.male);
+		types[1] = (ImageView) typeDialog.findViewById(R.id.female);
+		types[2] = (ImageView) typeDialog.findViewById(R.id.string);
+		types[3] = (ImageView) typeDialog.findViewById(R.id.piano);
+
+		types[0].setBackgroundResource(R.drawable.male);
+		types[1].setBackgroundResource(R.drawable.female);
+		types[2].setBackgroundResource(R.drawable.string);
+		types[3].setBackgroundResource(R.drawable.piano);
+
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp.setMargins(10, 10, 10, 10);
+
+
+		for (i = 0; i < types.length; i++) {
+			types[i].setLayoutParams(lp);
+			types[i].getLayoutParams().height = 100;
+			types[i].getLayoutParams().width = 100;
+			types[i].setOnClickListener(handler);
+			types[i].setOnTouchListener(handler);
+		}
+
 	}
 
 	void tempoDialogSetting() {
@@ -483,7 +523,7 @@ public class Setting extends Activity {
 		meter.setText("4/4");
 		tempo.setText("120");
 		quantizer.setText("e"); // 8분음표
-		type.setText("male");
+		type.setBackgroundResource(R.drawable.male);
 		triplet.setText("t"); // 트리플음표
 
 		keyText.setText("key");
@@ -508,20 +548,21 @@ public class Setting extends Activity {
 		mSL.addView(set_tempo2, 110f, 80f, 100f, 30f);
 
 		// 위치 지
-		mSL.addView(key, 530f, 50f, 100f, 50f);
-		mSL.addView(meter, 530f, 95f, 100f, 50f);
+		mSL.addView(meter, 530f, 50f, 100f, 50f);
+		mSL.addView(key, 530f, 95f, 100f, 50f);
 		mSL.addView(tempo, 530f, 140f, 100f, 50f);
-		mSL.addView(quantizer, 540f, 170f, 100f, 70f);
-		mSL.addView(type, 530f, 230f, 100f, 50f);
+		mSL.addView(type, 530f, 187f, 23f, 23f);
+		mSL.addView(quantizer, 530f, 210f, 100f, 50f);
 		mSL.addView(triplet, 480f, 260f, 100f, 70f);
 
-		mSL.addView(keyText, 400f, 50f, 100f, 50f);
-		mSL.addView(meterText, 400f, 95f, 100f, 50f);
+		mSL.addView(meterText, 400f, 50f, 100f, 50f);
+		mSL.addView(keyText, 400f, 95f, 100f, 50f);
 		mSL.addView(tempoText, 400f, 140f, 100f, 50f);
-		mSL.addView(quantizerText, 400f, 185f, 150f, 50f);
-		mSL.addView(typeText, 400f, 230f, 100f, 50f);
+		mSL.addView(typeText, 400f, 185f, 150f, 50f);
+		mSL.addView(quantizerText, 400f, 226f, 100f, 50f);
 		mSL.addView(tripletText, 400f, 275f, 100f, 50f);
-		mSL.addView(tripleCheck, 545f, 275f, 25f, 25f);
+
+		mSL.addView(tripleCheck, 545f, 275f, 20f, 20f);
 
 		// 사이즈 조
 		mSL.setScale_TextSize(set_note, 70f);// 큰악보
@@ -531,7 +572,7 @@ public class Setting extends Activity {
 		mSL.setScale_TextSize(meter, 22f);
 		mSL.setScale_TextSize(tempo, 22f);
 		mSL.setScale_TextSize(quantizer, 40f);
-		mSL.setScale_TextSize(type, 22f);
+		// mSL.setScale_TextSize(type, 22f);
 		mSL.setScale_TextSize(triplet, 40f);
 
 		mSL.setScale_TextSize(keyText, 22f);
@@ -551,7 +592,7 @@ public class Setting extends Activity {
 		key.setTextColor(Color.parseColor("#FF1F1D2A"));
 		meter.setTextColor(Color.parseColor("#FF1F1D2A"));
 		tempo.setTextColor(Color.parseColor("#FF1F1D2A"));
-		type.setTextColor(Color.parseColor("#FF1F1D2A"));
+		// type.setTextColor(Color.parseColor("#FF1F1D2A"));
 		quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
 		triplet.setTextColor(Color.parseColor("#FF1F1D2A"));
 
@@ -576,7 +617,7 @@ public class Setting extends Activity {
 		key.setTypeface(face);
 		meter.setTypeface(face);
 		tempo.setTypeface(face);
-		type.setTypeface(face);
+		// type.setTypeface(face);
 		// nextBtn.setTypeface(face);
 
 		set_note.setTypeface(note1);
@@ -652,6 +693,9 @@ public class Setting extends Activity {
 			s_manager.stopSound(i);
 		}
 		mWakeLock.release();
+		playButton.setBackgroundResource(R.drawable.play_on);
+		stopButton.setBackgroundResource(R.drawable.stop_on);
+		mRunning = false;
 		tp.onStop();
 	}
 
@@ -663,12 +707,49 @@ public class Setting extends Activity {
 		}
 
 		public boolean onTouch(View v, MotionEvent arg1) {
+			if (v == types[0] || v == types[1] || v == types[2]
+					|| v == types[3]) {
+				v.setPadding(10, 10, 10, 10);
+				if (v == types[0]) {
+
+					types[0].setBackgroundResource(R.drawable.male_sel);
+					// type.setBackgroundResource(R.drawable.male_sel);
+				} else if (v == types[1]) {
+					types[1].setBackgroundResource(R.drawable.female_sel);
+					// type.setText("female");
+				} else if (v == types[2]) {
+					types[2].setBackgroundResource(R.drawable.string_sel);
+					// type.setText("string");
+				} else if (v == types[3]) {
+					types[3].setBackgroundResource(R.drawable.pinao_sel);
+					// type.setText("piano");
+				}
+				return false;
+			}
 			((TextView) v).setTextColor(Color.parseColor("#FFbb4738"));
 			return false;
 		}
 
 		@Override
 		public void onClick(View v) {
+			if (v == types[0] || v == types[1] || v == types[2]
+					|| v == types[3]) {
+				if (v == types[0]) {
+					types[0].setBackgroundResource(R.drawable.male);
+					type.setBackgroundResource(R.drawable.male);
+				} else if (v == types[1]) {
+					types[1].setBackgroundResource(R.drawable.female);
+					type.setBackgroundResource(R.drawable.female);
+				} else if (v == types[2]) {
+					types[2].setBackgroundResource(R.drawable.string);
+					type.setBackgroundResource(R.drawable.string);
+				} else if (v == types[3]) {
+					types[3].setBackgroundResource(R.drawable.piano);
+					type.setBackgroundResource(R.drawable.piano);
+				}
+				typeDialog.dismiss();
+				return;
+			}
 			if (v == quantizers[0] || v == quantizers[1] || v == quantizers[2]) {
 				quantizer.setText(((TextView) v).getText());
 				quantizerDialog.dismiss();
@@ -689,12 +770,19 @@ public class Setting extends Activity {
 				set_note.setText(selectScore + selectKey1 + selectMeter
 						+ selectKey2);
 				meterDialog.dismiss();
-
-			} else if (v == types[0] || v == types[1] || v == types[2]
-					|| v == types[3]) {
-				typeDialog.dismiss();
 			}
 			((TextView) v).setTextColor(Color.parseColor("#FF1F1D2A"));
 		}
 	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODE_ANOTHER) {
+			Toast.makeText(getBaseContext(), "취소하고 다시돌아왔음요", 10).show();
+
+		} else {
+			Toast.makeText(getBaseContext(), "ff", 10).show();
+		}
+	}
+
 }

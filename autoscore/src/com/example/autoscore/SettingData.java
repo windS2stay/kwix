@@ -1,11 +1,11 @@
 package com.example.autoscore;
 
 public class SettingData {
-	String tempo;
+	int tempo;
 	String type;
 	String key;
-	String triple;
-	String quanizer;
+	boolean triple;
+	int quantizer;
 	String meter;
 
 }

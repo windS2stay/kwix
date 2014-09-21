@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 public class Scoremaker extends Activity {
 
+	SettingData data = new SettingData();
 	private ScalableLayout mSL, sSL;
 	RelativeLayout scoremakerBG;
 	HorizontalScrollView noteScroll;
@@ -32,7 +33,8 @@ public class Scoremaker extends Activity {
 	ImageButton deleteButton, applyButton;
 	Dialog settingDialog;
 	Typeface note;
-	Boolean recordMode = true,metroOn=true;;
+	Boolean recordMode = true, metroOn = true;;
+
 	int playState;
 
 	final int nothing = 0;
@@ -53,14 +55,16 @@ public class Scoremaker extends Activity {
 		scoremakerBG = new RelativeLayout(this);
 		// scoremakerBG.setBackgroundResource(R.drawable.p3_2_back);
 		setContentView(scoremakerBG);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.CENTER_IN_PARENT);
 		scoremakerBG.setBackgroundColor(Color.parseColor("#FFfcfcec"));
 
 		mSL = new ScalableLayout(this, 1280, 800);
 		mSL.setBackgroundResource(R.drawable.p3_2_back);
 
-		scoremakerBG.addView(mSL,params);
+		scoremakerBG.addView(mSL, params);
 
 		noteScroll = new HorizontalScrollView(this);
 		mSL.addView(noteScroll, 15f, 300f, 1240f, 300f); // 수정하기
@@ -150,10 +154,36 @@ public class Scoremaker extends Activity {
 
 		// ///////////////////////////////
 
-		Intent receivedItent = getIntent();
+		Intent receivedIntent = getIntent();
 		// 현재 액티비티를 띄우기 위해 생성한 인텐트 안에 넣은 부가 데이터 가져오기
-		String receivedString = receivedItent.getStringExtra("startCount");
-		Toast.makeText(getBaseContext(), receivedString, 10).show();
+		String receivedString = receivedIntent.getStringExtra("key");
+		data.key = receivedString;
+		receivedString = receivedIntent.getStringExtra("type");
+		data.type = receivedString;
+		receivedString = receivedIntent.getStringExtra("meter");
+		data.meter = receivedString;
+
+		int receivedInt = receivedIntent.getIntExtra("tempo", 120);
+		data.tempo = receivedInt;
+		receivedInt = receivedIntent.getIntExtra("quantizer", 120);
+		data.quantizer = receivedInt;
+
+		boolean receivedBoolean = receivedIntent
+				.getBooleanExtra("triple", true);
+		data.triple = receivedBoolean;
+		/*
+		 * String type; String key; string meter int tempo,int quantizer;
+		 * 
+		 * boolean triple; ;
+		 */
+
+		Toast.makeText(
+				getBaseContext(),
+				"key = " + data.key + "\ntype = " + data.type + "\nmeter = "
+						+ data.meter + "\ntempo = "
+						+ Integer.toString(data.tempo) + "\nquantizer = "
+						+ Integer.toString(data.quantizer) + "\ntriple = "
+						+ Boolean.toString(data.triple), 10).show();
 
 		stateButtonSetting();
 		playButtonSetting();
@@ -164,8 +194,74 @@ public class Scoremaker extends Activity {
 		editButtonTouchSetting();
 		deleteButtonSetting();
 		settingButtonSetting();
+
 		applyButtonSetting();
-		metroButtonSetting();
+
+		// ////////metro Button setting///////////
+		metronomeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// applyButton.setBackgroundResource(R.drawable.apply_on);
+				metronomeButton.setBackgroundResource(R.drawable.metro_off);/*
+																			 * //
+																			 * metronomeButton
+																			 * .
+																			 * setBackgroundResource
+																			 * (
+																			 * R
+																			 * .
+																			 * drawable
+																			 * .
+																			 * metro_off
+																			 * )
+																			 * ;
+																			 * if
+																			 * (
+																			 * metroOn
+																			 * ==
+																			 * true
+																			 * )
+																			 * {
+																			 * metroOn
+																			 * =
+																			 * false
+																			 * ;
+																			 * metronomeButton
+																			 * .
+																			 * setBackgroundResource
+																			 * (
+																			 * R
+																			 * .
+																			 * drawable
+																			 * .
+																			 * metro_on
+																			 * )
+																			 * ;
+																			 * }
+																			 * else
+																			 * {
+																			 * metroOn
+																			 * =
+																			 * true
+																			 * ;
+																			 * 
+																			 * }
+																			 */
+			}
+
+		});
+		metronomeButton.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// applyButton.setBackgroundResource(R.drawable.apply_off);
+
+				return recordMode;
+			}
+
+		});
 		// /////setting Button setting////
 
 		backButton.setOnClickListener(new OnClickListener() {
@@ -377,7 +473,7 @@ public class Scoremaker extends Activity {
 					playState = playing;
 				} else if (playState != recording) {
 
-					pauseButton.setBackgroundResource(R.drawable.pause_off);
+					pauseButton.setBackgroundResource(R.drawable.pause_on);
 					playState = pausing;
 				}
 
@@ -385,15 +481,14 @@ public class Scoremaker extends Activity {
 
 		});
 
-		/*
-		 * pauseButton.setOnTouchListener(new OnTouchListener() {
-		 * 
-		 * @Override public boolean onTouch(View v, MotionEvent event) {
-		 * pauseButton.setBackgroundResource(R.drawable.pause_off); return
-		 * false; }
-		 * 
-		 * });
-		 */
+		pauseButton.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				pauseButton.setBackgroundResource(R.drawable.pause_off);
+				return false;
+			}
+
+		});
 
 	}
 
@@ -870,9 +965,6 @@ public class Scoremaker extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				settingButton.setBackgroundResource(R.drawable.option); // TODO
 																		// Auto-generated
-				// meth
-				// //
-				// stub
 
 				return false;
 			}
@@ -885,48 +977,18 @@ public class Scoremaker extends Activity {
 			public void onClick(View v) {
 				Toast.makeText(getBaseContext(), "setting", 10).show();
 
-				View popupView = getLayoutInflater().inflate(
+			/*	View popupView = getLayoutInflater().inflate(
 						R.layout.scoremaker_setting, null);
 
 				mPopupWindow = new PopupWindow(popupView,
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-				/**
-				 * PopupWindow Show 메서드 showAsDropDown(anchor, xoff, yoff)
-				 * 
-				 * @View anchor : anchor View를 기준으로 PopupWindow 표시 (상,하)
-				 *       PopupWindow가 최대한 화면에 표시되도록 시스템이 설정해 준다. xoff, yoff :
-				 *       anchor View를 기준으로 PopupWindow를 표시된것을 기준으로 xoff는 x좌표,
-				 *       yoff는 y좌표 만큼 이동 한다.
-				 * @int xoff : -숫자(화면 왼쪽으로 이동), +숫자(화면 오른쪽으로 이동)
-				 * @int yoff : -숫자(화면 위쪽으로 이동), +숫자(화면 아래쪽으로 이동) achor View 를 덮는
-				 *      것도 가능 화면바깥 좌우, 위아래로 이동 가능 (짤린 상태로 표시됨)
-				 */
 				mPopupWindow.setAnimationStyle(-1); // 애니메이션 설정(-1:설정안함, 0:설정)
-				// mPopupWindow.showAsDropDown(btn_Popup, 50, 50);
+				//mPopupWindow.showAsDropDown(btn_Popup, 50, 50);
 
-				/**
-				 * update() 메서드를 통해 PopupWindow의 좌우 사이즈, x좌표, y좌표 anchor View까지
-				 * 재설정 해줄수 있습니다.
-				 */
 
-				mPopupWindow.update(100, 100);
-				// mPopupWindow.update(anchor, xoff, yoff, width, height)(width,
-				// height);
-				// settingDialog.show();
-				//
-				/*
-				 * noteScroll = new HorizontalScrollView(this);
-				 * mSL.addView(noteScroll, 15f, 300f, 1240f, 300f); // 수정하기
-				 * 
-				 * setting(); test = new TextView(this); test.setText(
-				 * " &4====================================================================="
-				 * );
-				 * 
-				 * noteScroll.addView(test); test.setTypeface(note);
-				 * test.setTextSize(140);
-				 */
-				// TODO Auto-generated method stub
+				mPopupWindow.update(100, 100);*/
+
 			}
 
 		});
@@ -948,43 +1010,6 @@ public class Scoremaker extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				applyButton.setBackgroundResource(R.drawable.apply_off);
-
-				return recordMode;
-			}
-
-		});
-
-	}
-	
-	void metroButtonSetting(){
-		
-	
-		metronomeButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//applyButton.setBackgroundResource(R.drawable.apply_on);
-				
-				metronomeButton.setBackgroundResource(R.drawable.metro_off);
-				if(metroOn==true)
-				{
-					metroOn=false;
-					metronomeButton.setBackgroundResource(R.drawable.metro_on);
-				}
-				else
-				{
-					metroOn=true;
-					metronomeButton.setBackgroundResource(R.drawable.metro_off);
-				}
-			}
-
-		});
-		metronomeButton.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				//applyButton.setBackgroundResource(R.drawable.apply_off);
 
 				return recordMode;
 			}

@@ -120,10 +120,20 @@ public class Setting extends Activity {
 				if (mRunning) {
 					stopKey();
 				}
+
+				if (tripleCheck.isChecked()) {
+					data.triple = true;
+					// Toast.makeText(getBaseContext(), "check", 10);
+				}
 				Intent intent = new Intent(Setting.this, Scoremaker.class);
 
 				// 설정값 넘기기기기기
-				intent.putExtra("startCount", String.valueOf("statCount"));
+				intent.putExtra("tempo", data.tempo);
+				intent.putExtra("type", data.type);
+				intent.putExtra("key", data.key);
+				intent.putExtra("triple", data.triple);
+				intent.putExtra("quantizer", data.quantizer);
+				intent.putExtra("meter", data.meter);
 				intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				nextBtn.setBackgroundResource(R.drawable.next_on2);
 				startActivityForResult(intent, REQUEST_CODE_ANOTHER);
@@ -203,72 +213,84 @@ public class Setting extends Activity {
 					selectKey2 = "w=======";
 					// note.setImageResource(R.drawable.key_4);
 					key.setText("A");
+					data.key = "A";
 					break;
 				case 2:// Ab
 						// note.setImageResource(R.drawable.key_9);
 					selectKey1 = "èëçê";
 					selectKey2 = "w======";
 					key.setText("Ab");
+					data.key = "Ab";
 					break;
 				case 3:// B
 						// note.setImageResource(R.drawable.key_6);
 					selectKey1 = "ÜÙÝÚ×";
 					selectKey2 = "q=====";
 					key.setText("B");
+					data.key = "B";
 					break;
 				case 4:// Bb
 						// note.setImageResource(R.drawable.key_13);
 					selectKey1 = "èë";
 					selectKey2 = "q========";
 					key.setText("Bb");
+					data.key = "Bb";
 					break;
 				case 5:// C
 						// note.setImageResource(R.drawable.key_1);
 					selectKey1 = "";
 					selectKey2 = "r==========";
 					key.setText("C");
+					data.key = "C";
 					break;
 				case 6:// D
 						// note.setImageResource(R.drawable.key_3);
 					selectKey1 = "ÜÙ";
 					selectKey2 = "s========";
 					key.setText("D");
+					data.key = "D";
 					break;
 				case 7:// Db
 						// note.setImageResource(R.drawable.key_11);
 					selectKey1 = "èëçêæ";
 					selectKey2 = "s=====";
 					key.setText("Db");
+					data.key = "Db";
 					break;
 				case 8:// E
 						// note.setImageResource(R.drawable.key_5);
 					selectKey1 = "ÜÙÝÚ";
 					selectKey2 = "t======";
 					key.setText("E");
+					data.key = "E";
 					break;
 				case 9:// Eb
 						// note.setImageResource(R.drawable.key_10);
 					selectKey1 = "èëç";
 					selectKey2 = "t=======";
 					key.setText("Eb");
+					data.key = "Eb";
 					break;
 				case 10:// F
 					// note.setImageResource(R.drawable.key_12);
 					selectKey1 = "è";
 					selectKey2 = "u=========";
 					key.setText("F");
+					data.key = "F";
 					break;
 				case 11:// F#
 					// note.setImageResource(R.drawable.key_7);
 					selectKey1 = "ÜÙÝÚ×Û";
 					selectKey2 = "u====";
 					key.setText("F#");
+					data.key = "F#";
 					break;
 				case 12:// G
 					// note.setImageResource(R.drawable.key_2);
 					selectKey1 = "Ü";
 					selectKey2 = "v=========";
 					key.setText("G");
+					data.key = "G";
 					break;
 
 				default:
@@ -315,6 +337,7 @@ public class Setting extends Activity {
 					stopKey();
 				}
 				typeDialog.show();
+
 				// type.setTextColor(Color.parseColor("#FF1F1D2A"));
 
 			}
@@ -330,6 +353,7 @@ public class Setting extends Activity {
 				}
 				quantizerDialog.show();
 				quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
+				// data.quanizer=Integer.parseInt(quantizer.toString());
 			}
 		});
 
@@ -417,7 +441,6 @@ public class Setting extends Activity {
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		lp.setMargins(10, 10, 10, 10);
 
-
 		for (i = 0; i < types.length; i++) {
 			types[i].setLayoutParams(lp);
 			types[i].getLayoutParams().height = 100;
@@ -451,6 +474,8 @@ public class Setting extends Activity {
 				tempo.setText(Integer.toString(tempoWheel.getCurrentItem()));
 				set_tempo2.setText("="
 						+ Integer.toString(tempoWheel.getCurrentItem()));
+				//Toast.makeText(getBaseContext(),tempo.toString(),10).show();
+				data.tempo=Integer.parseInt(tempo.getText().toString());
 				tempoDialog.dismiss();
 			}
 
@@ -532,6 +557,13 @@ public class Setting extends Activity {
 		typeText.setText("type");
 		quantizerText.setText("quantize");
 		tripletText.setText("triple");
+		
+		data.tempo=120;
+		data.key="C";
+		data.meter="4/4";
+		data.quantizer=8;
+		data.triple=false;
+		data.type="male";
 
 		// nextBtn.setText("start");
 
@@ -713,16 +745,12 @@ public class Setting extends Activity {
 				if (v == types[0]) {
 
 					types[0].setBackgroundResource(R.drawable.male_sel);
-					// type.setBackgroundResource(R.drawable.male_sel);
 				} else if (v == types[1]) {
 					types[1].setBackgroundResource(R.drawable.female_sel);
-					// type.setText("female");
 				} else if (v == types[2]) {
 					types[2].setBackgroundResource(R.drawable.string_sel);
-					// type.setText("string");
 				} else if (v == types[3]) {
 					types[3].setBackgroundResource(R.drawable.pinao_sel);
-					// type.setText("piano");
 				}
 				return false;
 			}
@@ -736,35 +764,50 @@ public class Setting extends Activity {
 					|| v == types[3]) {
 				if (v == types[0]) {
 					types[0].setBackgroundResource(R.drawable.male);
+					data.type="male";
 					type.setBackgroundResource(R.drawable.male);
 				} else if (v == types[1]) {
 					types[1].setBackgroundResource(R.drawable.female);
 					type.setBackgroundResource(R.drawable.female);
+					data.type="female";
 				} else if (v == types[2]) {
 					types[2].setBackgroundResource(R.drawable.string);
 					type.setBackgroundResource(R.drawable.string);
+					data.type="string";
 				} else if (v == types[3]) {
 					types[3].setBackgroundResource(R.drawable.piano);
 					type.setBackgroundResource(R.drawable.piano);
+					data.type="piano";
 				}
 				typeDialog.dismiss();
 				return;
 			}
 			if (v == quantizers[0] || v == quantizers[1] || v == quantizers[2]) {
+				if (v == quantizers[0]) {
+					data.quantizer = 4;
+				} else if (v == quantizers[1]) {
+					data.quantizer = 16;
+				}
+				if (v == quantizers[2]) {
+					data.quantizer = 8;
+				}
 				quantizer.setText(((TextView) v).getText());
 				quantizerDialog.dismiss();
 			} else if (v == meters[0] || v == meters[1] || v == meters[2]) {
 				if (v == meters[0]) {
 					selectMeter = "3";
 					meter.setText("3/4");
+					data.meter="3/4";
 					set_tempo1.setText("q");
 				} else if (v == meters[1]) {
 					selectMeter = "4";
 					meter.setText("4/4");
+					data.meter="4/4";
 					set_tempo1.setText("q");
 				} else if (v == meters[2]) {
 					meter.setText("6/8");
 					selectMeter = "6";
+					data.meter="6/8";
 					set_tempo1.setText("e");
 				}
 				set_note.setText(selectScore + selectKey1 + selectMeter
@@ -778,7 +821,7 @@ public class Setting extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_CODE_ANOTHER) {
-			Toast.makeText(getBaseContext(), "취소하고 다시돌아왔음요", 10).show();
+			//Toast.makeText(getBaseContext(), "취소하고 다시돌아왔음요", 10).show();
 
 		} else {
 			Toast.makeText(getBaseContext(), "ff", 10).show();

@@ -26,7 +26,7 @@ public class CusView extends View{
 	protected void onDraw(Canvas canvas){
 		String line = "asdfvasdflkjasdflkj";
 		Paint paint = new Paint();
-		paint.setColor(Color.WHITE);
+		paint.setColor(Color.BLACK);
 		//paint.setTypeface(lassus);
 		paint.setTextSize(40);
 		canvas.drawText(line, 100, 100, paint);	

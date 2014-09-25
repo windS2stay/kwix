@@ -3,8 +3,13 @@ package com.example.autoscore;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,7 +28,12 @@ public class Scoremaker extends Activity {
 
 	private ScalableLayout mSL, sSL;
 	RelativeLayout scoremakerBG;
+	scoreView scoreview;
+	AttributeSet attrs;
+	Paint paint = new Paint();
 	HorizontalScrollView noteScroll;
+	LinearLayout linear;
+	LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 	ImageButton metronomeButton, playButton, pauseButton, stopButton,
 			recordButton, exportButton, settingButton, backButton, stateButton;
 	ImageButton[] notes = new ImageButton[5];
@@ -31,7 +42,10 @@ public class Scoremaker extends Activity {
 	ImageButton deleteButton, applyButton;
 	Dialog settingDialog;
 	Typeface note;
+	Typeface musical;
+	Typeface lassus;
 	Boolean recordMode = true;
+	CusView cusview;
 	int playState;
 
 	final int nothing = 0;
@@ -50,23 +64,35 @@ public class Scoremaker extends Activity {
 
 		scoremakerBG = new RelativeLayout(this);
 		// scoremakerBG.setBackgroundResource(R.drawable.p3_2_back);
-		setContentView(scoremakerBG);
-
+		
 		mSL = new ScalableLayout(this, 1280, 800);
-		mSL.setBackgroundResource(R.drawable.p3_2_back);
+		scoremakerBG.setBackgroundResource(R.drawable.p3_2_back);
 
 		scoremakerBG.addView(mSL);
 
+		scoreview = new scoreView(this);
 		noteScroll = new HorizontalScrollView(this);
-		mSL.addView(noteScroll, 15f, 300f, 1240f, 300f); // 수정하기
+		linear = new LinearLayout(this);
 
+		mSL.addView(noteScroll, 15f, 250f, 1240f, 365f); // 수정하기
+		noteScroll.addView(linear, 2000, getWindowManager().getDefaultDisplay().getHeight()/2);	
+		linear.addView(scoreview, 2000, getWindowManager().getDefaultDisplay().getHeight()/2);
+		//악보 그리는 부분 addView
+		
 		setting();
-		test = new TextView(this);
-		test.setText(" &4=====================================================================");
+		
+		setContentView(scoremakerBG);
+		
+		
+		/*test = new TextView(this);
+		test.setText("&4========================!========================!========================!");
 
-		noteScroll.addView(test);
+		//noteScroll.addView(test);
 		test.setTypeface(note);
-		test.setTextSize(getWindowManager().getDefaultDisplay().getHeight() / 5);
+		
+		test.setTextColor(Color.BLACK);
+		test.setTextSize(getWindowManager().getDefaultDisplay().getHeight() / 10);*/
+		
 
 	}
 
@@ -130,6 +156,8 @@ public class Scoremaker extends Activity {
 		mSL.addView(stateButton, 133f, 685f, 77f, 77f);
 
 		note = Typeface.createFromAsset(getAssets(), "fonts/MusiQwikB.ttf");
+		lassus = Typeface.createFromAsset(getAssets(), "fonts/lassus.ttf");	
+		musical = Typeface.createFromAsset(getAssets(), "fonts/Musical.ttf");
 
 		btnSetting();
 	}
@@ -876,4 +904,63 @@ public class Scoremaker extends Activity {
 
 		});
 	}
+	
+	protected class scoreView extends View{
+		
+		public scoreView(Context context) {
+			super(context);
+		//	this.context = context;			
+			//TODO Auto-generated constructor stub			
+		}
+
+		@Override
+		protected void onDraw(Canvas canvas){		
+			String line = "44444444-4444444-";
+	//	default 오선지
+			Paint paint = new Paint();	
+			paint.setColor(Color.BLACK);
+			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/2.15));			
+			paint.setTypeface(lassus);
+			canvas.drawText(line, (float)(getWindowManager().getDefaultDisplay().getHeight()/20.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/3.3) , paint);
+			float viewwidth = paint.measureText(line, 0, line.length());
+			getLayoutParams().width = (int)viewwidth+50;
+			paint.setTypeface(musical);
+			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/6));
+			canvas.drawText("&", (float)(getWindowManager().getDefaultDisplay().getHeight()/14), (float)(getWindowManager().getDefaultDisplay().getHeight()/3.3), paint);
+	//	높은음자리표
+			
+			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/5.5));
+			canvas.drawText("4", (float)(getWindowManager().getDefaultDisplay().getHeight()/3.9), (float)(getWindowManager().getDefaultDisplay().getHeight()/5.55), paint);
+			canvas.drawText("4", (float)(getWindowManager().getDefaultDisplay().getHeight()/3.9), (float)(getWindowManager().getDefaultDisplay().getHeight()/3.75), paint);
+	//	박자(4/4) ----> 넘어오는 인자 값을 받아서 교체해주면 됨
+			
+			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/8.55));
+			canvas.drawText("#", (float)(getWindowManager().getDefaultDisplay().getHeight()/5), (float)(getWindowManager().getDefaultDisplay().getHeight()/7.25), paint);
+	//	높은 레 == 5.6, 높은 파 7.25
+	//	key 값에 따라 변경 됨
+					
+			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/7));
+			canvas.drawText("_", (float)(getWindowManager().getDefaultDisplay().getHeight()/2.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/10), paint);
+			canvas.drawText("_", (float)(getWindowManager().getDefaultDisplay().getHeight()/2.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/15), paint);
+			canvas.drawText("_", (float)(getWindowManager().getDefaultDisplay().getHeight()/2.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/30), paint);
+			canvas.drawText("Q", (float)(getWindowManager().getDefaultDisplay().getHeight()/2.41), (float)(getWindowManager().getDefaultDisplay().getHeight()/30), paint);
+	//	가장 높은 음 --> 6옥타브 미
+			
+			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/7));
+			canvas.drawText("_", (float)(getWindowManager().getDefaultDisplay().getHeight()/1.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/2.4), paint);
+			canvas.drawText("_", (float)(getWindowManager().getDefaultDisplay().getHeight()/1.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/2.65), paint);
+			canvas.drawText("_", (float)(getWindowManager().getDefaultDisplay().getHeight()/1.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/2.95), paint);
+			canvas.drawText("q", (float)(getWindowManager().getDefaultDisplay().getHeight()/1.48), (float)(getWindowManager().getDefaultDisplay().getHeight()/2.4), paint);
+	//	가장 낮은 음 --> 3옥타브 파
+			
+			//			line = line + "4444444-";
+			//			paint.setTextSize((float)(getWindowManager().getDefaultDisplay().getHeight()/2.15));			
+			//			paint.setTypeface(lassus);
+			//			canvas.drawText(line, (float)(getWindowManager().getDefaultDisplay().getHeight()/20.5), (float)(getWindowManager().getDefaultDisplay().getHeight()/3.3) , paint);
+			//			viewwidth = paint.measureText(line, 0, line.length());
+			//			getLayoutParams().width = (int)viewwidth+50;
+//	오선지 추가시 사용 할 내용들
+		}
+	}
 }
+	

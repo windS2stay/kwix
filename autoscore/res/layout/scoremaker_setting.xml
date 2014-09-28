@@ -1,13 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aaa"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:id="@+id/aaa">
+    android:layout_height="match_parent"
+    android:background="#f8f8ec" >
 
-    <ImageView
-        android:id="@+id/imageView1"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/warning" />
+        android:gravity="right"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/settingCancel"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:background="#00000000"
+            android:src="@drawable/cancel1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left" >
+
+            <TextView
+                android:id="@+id/tempoText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" tempo   "
+                android:textColor="#000000"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/tempo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="120"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left" >
+
+            <TextView
+                android:id="@+id/quantizeText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" quantize   "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/quantize2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="43dp"
+                android:text="120"
+                android:textColor="#000000"
+                android:textSize="35dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left" >
+
+            <TextView
+                android:id="@+id/tripleText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" triple "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/triple2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="t "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000"
+                android:textSize="30dp" />
+
+            <CheckBox
+                android:id="@+id/tripleBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                
+                android:scaleX="0.70"
+                android:scaleY="0.70" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/settingCheck"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="#00000000"
+            android:gravity="right"
+            android:src="@drawable/check_on" />
+    </LinearLayout>
 
 </RelativeLayout>

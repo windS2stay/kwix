@@ -1,19 +1,27 @@
 package com.example.autoscore;
 
-import android.app.ActionBar.LayoutParams;
+import kankan.wheel.widget.OnWheelClickedListener;
+import kankan.wheel.widget.WheelView;
+import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,16 +31,23 @@ public class Scoremaker extends Activity {
 
 	SettingData data = new SettingData();
 	private ScalableLayout mSL, sSL;
+	Dialog settingDialog, tempoDialog, quantizeDialog;
+	NumericWheelAdapter tempoNumericWheelAdapter;
+	WheelView tempoWheel;
 	RelativeLayout scoremakerBG;
 	HorizontalScrollView noteScroll;
 	ImageButton metronomeButton, playButton, pauseButton, stopButton,
 			recordButton, exportButton, settingButton, backButton, stateButton;
+	int quantizeValue;
+
+	TextView tempo, quantize;
+	ImageButton settingCancel, settingCheck;
+	TextView quantizers[] = new TextView[3];
 	ImageButton[] notes = new ImageButton[5];
 	ImageButton[] rests = new ImageButton[5];
 	ImageButton[] signs = new ImageButton[5];
+	OnClickArray handler = new OnClickArray();
 	ImageButton deleteButton, applyButton;
-	Dialog settingDialog;
-	Typeface note;
 	Boolean recordMode = true, metroOn = true;;
 
 	int playState;
@@ -45,6 +60,8 @@ public class Scoremaker extends Activity {
 	// 삭제할것
 	SoundManager s_manager;
 	TextView test;
+	Typeface face, note;
+
 	public static final int REQUEST_CODE_ANOTHER = 1001;
 
 	@Override
@@ -80,6 +97,9 @@ public class Scoremaker extends Activity {
 	}
 
 	void setting() {
+
+		note = Typeface.createFromAsset(getAssets(), "fonts/MusiSync.ttf");
+		face = Typeface.createFromAsset(getAssets(), "fonts/Daum_Regular.ttf");
 		metronomeButton = new ImageButton(this);
 		playButton = new ImageButton(this);
 		pauseButton = new ImageButton(this);
@@ -97,6 +117,12 @@ public class Scoremaker extends Activity {
 		}
 		deleteButton = new ImageButton(this);
 		applyButton = new ImageButton(this);
+
+		settingDialog = new Dialog(Scoremaker.this);
+		tempoDialog = new Dialog(Scoremaker.this);
+		quantizeDialog = new Dialog(Scoremaker.this);
+		settingCancel = new ImageButton(this);
+		settingCheck = new ImageButton(this);
 
 		metronomeButton.setBackgroundResource(R.drawable.metro_on);
 		playButton.setBackgroundResource(R.drawable.play_on);
@@ -137,8 +163,6 @@ public class Scoremaker extends Activity {
 		mSL.addView(backButton, 16f, 685f, 77f, 75f);
 		mSL.addView(settingButton, 16f, 15f, 86f, 83f);
 		mSL.addView(stateButton, 133f, 685f, 77f, 77f);
-
-		note = Typeface.createFromAsset(getAssets(), "fonts/MusiQwikB.ttf");
 
 		btnSetting();
 	}
@@ -193,10 +217,9 @@ public class Scoremaker extends Activity {
 
 		editButtonTouchSetting();
 		deleteButtonSetting();
-		settingButtonSetting();
 
 		applyButtonSetting();
-
+		settingButtonSetting();
 		// ////////metro Button setting///////////
 		metronomeButton.setOnClickListener(new OnClickListener() {
 
@@ -204,61 +227,23 @@ public class Scoremaker extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				// applyButton.setBackgroundResource(R.drawable.apply_on);
-				metronomeButton.setBackgroundResource(R.drawable.metro_off);/*
-																			 * //
-																			 * metronomeButton
-																			 * .
-																			 * setBackgroundResource
-																			 * (
-																			 * R
-																			 * .
-																			 * drawable
-																			 * .
-																			 * metro_off
-																			 * )
-																			 * ;
-																			 * if
-																			 * (
-																			 * metroOn
-																			 * ==
-																			 * true
-																			 * )
-																			 * {
-																			 * metroOn
-																			 * =
-																			 * false
-																			 * ;
-																			 * metronomeButton
-																			 * .
-																			 * setBackgroundResource
-																			 * (
-																			 * R
-																			 * .
-																			 * drawable
-																			 * .
-																			 * metro_on
-																			 * )
-																			 * ;
-																			 * }
-																			 * else
-																			 * {
-																			 * metroOn
-																			 * =
-																			 * true
-																			 * ;
-																			 * 
-																			 * }
-																			 */
-			}
+				if (metroOn == true) {
+					metronomeButton.setBackgroundResource(R.drawable.metro_off);
+					metroOn = false;
 
-		});
-		metronomeButton.setOnTouchListener(new OnTouchListener() {
+				} else if (metroOn == false) {
+					metronomeButton.setBackgroundResource(R.drawable.metro_on);
+					metroOn = true;
+				}
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// applyButton.setBackgroundResource(R.drawable.apply_off);
-
-				return recordMode;
+				/*
+				 * // metronomeButton . setBackgroundResource ( R . drawable .
+				 * metro_off ) ; if ( metroOn == true ) { metroOn = false ;
+				 * metronomeButton . setBackgroundResource ( R . drawable .
+				 * metro_on ) ; } else { metroOn = true ;
+				 * 
+				 * }
+				 */
 			}
 
 		});
@@ -388,7 +373,8 @@ public class Scoremaker extends Activity {
 			@Override
 			public void onClick(View v) {
 				// s_manager.stopSound(1);
-				if (playState != recording) {
+				if (playState == recording) {
+				} else if (playState != recording) {
 					playState = nothing;
 					stopButton.setBackgroundResource(R.drawable.stop_on);
 					playButton.setBackgroundResource(R.drawable.play_on);
@@ -404,7 +390,10 @@ public class Scoremaker extends Activity {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				stopButton.setBackgroundResource(R.drawable.stop_off);
+				if (playState == recording) {
+				} else {
+					stopButton.setBackgroundResource(R.drawable.stop_off);
+				}
 				return false;
 			}
 
@@ -463,14 +452,13 @@ public class Scoremaker extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
-				if (playState == pausing) {
+				if (playState == recording) {
+				} else if (playState == pausing) {
 					pauseButton.setBackgroundResource(R.drawable.pause_on);
 					playState = nothing;
 
-				} else if (playState == playpausing) {
-					pauseButton.setBackgroundResource(R.drawable.pause_on);
-					playState = playing;
+				} else if (playState == playing) {
+					pauseButton.setBackgroundResource(R.drawable.pause_off);
 				} else if (playState != recording) {
 
 					pauseButton.setBackgroundResource(R.drawable.pause_on);
@@ -484,7 +472,10 @@ public class Scoremaker extends Activity {
 		pauseButton.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
-				pauseButton.setBackgroundResource(R.drawable.pause_off);
+				if (playState == recording) {
+				} else {
+					pauseButton.setBackgroundResource(R.drawable.pause_off);
+				}
 				return false;
 			}
 
@@ -943,55 +934,140 @@ public class Scoremaker extends Activity {
 	PopupWindow mPopupWindow;
 
 	void settingButtonSetting() {
-		/*
-		 * settingDialog = new Dialog(Scoremaker.this);
-		 * settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		 * settingDialog.setContentView(R.layout.scoremaker_setting);
-		 * android.view.WindowManager.LayoutParams params =
-		 * settingDialog.getWindow().getAttributes(); params.width =
-		 * 3000;//LayoutParams.MATCH_PARENT; params.height =
-		 * LayoutParams.MATCH_PARENT; settingDialog.getWindow().setAttributes(
-		 * (android.view.WindowManager.LayoutParams) params);
-		 * //settingDialog.getWindow().setGravity(Gravity.BOTTOM);
-		 * 
-		 * sSL = new ScalableLayout(getBaseContext(), 500, 500); RelativeLayout
-		 * a = (RelativeLayout) findViewById(R.id.aaa);
-		 * 
-		 * // a.addView(swSL); // /////setting Button setting////
-		 */
-		settingButton.setOnTouchListener(new OnTouchListener() {
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				settingButton.setBackgroundResource(R.drawable.option); // TODO
-																		// Auto-generated
+		settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		settingDialog.setContentView(R.layout.scoremaker_setting);
+		settingDialog.getWindow().setGravity(Gravity.LEFT | Gravity.TOP);
 
-				return false;
+		quantizeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		quantizeDialog.setContentView(R.layout.quantize_setting);
+
+		TextView tripleView = (TextView) settingDialog
+				.findViewById(R.id.triple2);
+
+		tempo = (TextView) settingDialog.findViewById(R.id.tempo2);
+		quantize = (TextView) settingDialog.findViewById(R.id.quantize2);
+		LinearLayout layout = (LinearLayout) settingDialog
+				.findViewById(R.id.linearLayout1);
+
+		settingCancel = (ImageButton) settingDialog
+				.findViewById(R.id.settingCancel);
+		settingCheck = (ImageButton) settingDialog
+				.findViewById(R.id.settingCheck);
+
+		settingCheck.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+
+				// 예전값 저장하기 아러미ㅏㅇ널미;ㅏ언ㄹ미;
+				// Toast.makeText(getBaseContext(), "setting", 10).show();
+				settingDialog.dismiss();
+
 			}
-
 		});
+
+		settingCancel.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				// Toast.makeText(getBaseContext(), "setting", 10).show();
+				data.quantizer = quantizeValue;
+				settingDialog.dismiss();
+			}
+		});
+
+		settingCancel.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		settingCheck.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		layout.setPadding(10, 10, 10, 10);
+
+		tripleView.setTypeface(note);
+		tempo.setTypeface(face);
+		quantize.setTypeface(note);
+
+		tempo.setText(Integer.toString(data.tempo));
+
+		if (data.quantizer == 4) {
+			quantize.setText("q");
+			quantizeValue = 4;
+		} else if (data.quantizer == 16) {
+			quantize.setText("s");
+			quantizeValue = 16;
+		} else if (data.quantizer == 8) {
+			quantize.setText("e");
+			quantizeValue = 8;
+		}
 
 		settingButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getBaseContext(), "setting", 10).show();
-
-			/*	View popupView = getLayoutInflater().inflate(
-						R.layout.scoremaker_setting, null);
-
-				mPopupWindow = new PopupWindow(popupView,
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-				mPopupWindow.setAnimationStyle(-1); // 애니메이션 설정(-1:설정안함, 0:설정)
-				//mPopupWindow.showAsDropDown(btn_Popup, 50, 50);
-
-
-				mPopupWindow.update(100, 100);*/
-
+				settingDialog.show();
 			}
 
 		});
+
+		tempoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		tempoDialog.setContentView(R.layout.tempo_setting);
+
+		tempoWheel = (WheelView) tempoDialog.findViewById(R.id.tempo_wheel);
+		tempoNumericWheelAdapter = new NumericWheelAdapter(this, 60, 200);
+		tempoNumericWheelAdapter.setTextSize(100);
+		tempoWheel.setViewAdapter(tempoNumericWheelAdapter);
+		tempoWheel.setCurrentItem(60);
+
+		// 템포 수정//
+
+		tempoWheel.addClickingListener(new OnWheelClickedListener() {
+
+			@Override
+			public void onItemClicked(WheelView wheel, int itemIndex) {
+
+				// tempoNumericWheelAdapter.setTextColor(Color.parseColor("#FFbb4738"));
+				tempo.setText(Integer.toString(tempoWheel.getCurrentItem()));
+				// Toast.makeText(getBaseContext(),tempo.toString(),10).show();
+				data.tempo = Integer.parseInt(tempo.getText().toString());
+				tempoDialog.dismiss();
+			}
+
+		});
+		quantizers[0] = (TextView) quantizeDialog.findViewById(R.id.quantize_4);
+		quantizers[1] = (TextView) quantizeDialog.findViewById(R.id.quantize_8);
+		quantizers[2] = (TextView) quantizeDialog
+				.findViewById(R.id.quantize_16);
+
+		for (int i = 0; i < quantizers.length; i++) {
+			quantizers[i].setTypeface(note);
+			quantizers[i].setTextSize(100);
+			quantizers[i].setTextColor(Color.parseColor("#FF000000"));
+			quantizers[i].setOnClickListener(handler);
+			quantizers[i].setOnTouchListener(handler);
+		}
+		quantize.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (data.quantizer == 4) {
+					quantize.setText("q");
+					quantizeValue = 4;
+				} else if (data.quantizer == 16) {
+					quantize.setText("s");
+					quantizeValue = 16;
+				} else if (data.quantizer == 8) {
+					quantize.setText("e");
+					quantizeValue = 8;
+				}
+				quantizeDialog.show();
+
+			}
+		});
+		tempo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				tempoDialog.show();
+			}
+
+		});
+
+		settingDialog.setCanceledOnTouchOutside(true);
+		quantizeDialog.setCanceledOnTouchOutside(true);
+
 	}
 
 	void applyButtonSetting() {
@@ -1026,5 +1102,34 @@ public class Scoremaker extends Activity {
 		} else {
 			Toast.makeText(getBaseContext(), "", 10).show();
 		}
+	}
+
+	private class OnClickArray implements OnClickListener, OnTouchListener {
+
+		@Override
+		public boolean onTouch(View arg0, MotionEvent arg1) {
+			// TODO Auto-generated method stub
+			((TextView) arg0).setTextColor(Color.parseColor("#FFbb4738"));
+			return false;
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (v == quantizers[0] | v == quantizers[1] | v == quantizers[2]) {
+				if (v == quantizers[0]) {// 4
+					quantize.setText("q");
+					data.quantizer = 4;
+				} else if (v == quantizers[1]) {// 8
+					quantize.setText("e");
+					data.quantizer = 8;
+				} else if (v == quantizers[2]) {// 16
+					quantize.setText("s");
+					data.quantizer = 16;
+				}
+				((TextView) v).setTextColor(Color.parseColor("#FF000000"));
+				quantizeDialog.dismiss();
+			}
+		}
+
 	}
 }

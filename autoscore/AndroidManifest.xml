@@ -50,8 +50,11 @@
             android:name="com.example.autoscore.Editpage"
             android:label="@string/title_activity_main" >
         </activity>
-        <activity android:name="HowToUse"></activity>
-        
+        <activity
+            android:name="HowToUse"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.autoscore;
 
+import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.OnWheelClickedListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
@@ -167,9 +168,9 @@ public class Setting extends Activity {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				if (mRunning == true) {
-					stopButton.setBackgroundResource(R.drawable.stop_off);
-				}
+
+				stopButton.setBackgroundResource(R.drawable.stop_off);
+
 				return false;
 			}
 
@@ -179,6 +180,8 @@ public class Setting extends Activity {
 				if (mRunning == true) {
 					mRunning = false;
 					stopKey();
+				} else {
+					stopButton.setBackgroundResource(R.drawable.stop_on);
 				}
 
 			}
@@ -193,7 +196,7 @@ public class Setting extends Activity {
 					stopKey();
 				}
 				meterDialog.show();
-				meter.setTextColor(Color.parseColor("#FF1F1D2A"));
+				meter.setTextColor(Color.parseColor("#FF000000"));
 			}
 		});
 		for (i = 0; i < meters.length; i++) {
@@ -310,7 +313,7 @@ public class Setting extends Activity {
 					stopKey();
 				}
 				keyDialog.show();
-				key.setTextColor(Color.parseColor("#FF1F1D2A"));
+				key.setTextColor(Color.parseColor("#FF000000"));
 			}
 		});
 
@@ -322,7 +325,7 @@ public class Setting extends Activity {
 					stopKey();
 				}
 				tempoDialog.show();
-				tempo.setTextColor(Color.parseColor("#FF1F1D2A"));
+				tempo.setTextColor(Color.parseColor("#FF000000"));
 
 			}
 		});
@@ -338,7 +341,7 @@ public class Setting extends Activity {
 				}
 				typeDialog.show();
 
-				// type.setTextColor(Color.parseColor("#FF1F1D2A"));
+				// type.setTextColor(Color.parseColor("#FF000000"));
 
 			}
 		});
@@ -352,7 +355,7 @@ public class Setting extends Activity {
 					stopKey();
 				}
 				quantizerDialog.show();
-				quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
+				quantizer.setTextColor(Color.parseColor("#FF000000"));
 				// data.quanizer=Integer.parseInt(quantizer.toString());
 			}
 		});
@@ -458,24 +461,30 @@ public class Setting extends Activity {
 		tempoDialog.setContentView(R.layout.tempo_setting);
 
 		tempoWheel = (WheelView) tempoDialog.findViewById(R.id.tempo_wheel);
-		tempoNumericWheelAdapter = new NumericWheelAdapter(this, 0, 200);
-		tempoNumericWheelAdapter.setTextSize(100);
+		tempoNumericWheelAdapter = new NumericWheelAdapter(this, 60, 200);
+		tempoNumericWheelAdapter.setTextSize(50);
 		tempoWheel.setViewAdapter(tempoNumericWheelAdapter);
-		tempoWheel.setCurrentItem(120);
+		tempoWheel.setCurrentItem(60);
 
-		// 템포 수정//
+		tempoWheel.addChangingListener(new OnWheelChangedListener() {
 
+			@Override
+			public void onChanged(WheelView wheel, int oldValue, int newValue) {
+				// TODO Auto-generated method stub
+				tempo.setText(Integer.toString(tempoWheel.getCurrentItem() + 60));
+				set_tempo2.setText("="
+						+ Integer.toString(tempoWheel.getCurrentItem() + 60));
+				// Toast.makeText(getBaseContext(),tempo.toString(),10).show();
+				data.tempo = Integer.parseInt(tempo.getText().toString());
+				// tempoNumericWheelAdapter.setTextColor(Color.parseColor("#FFbb4738"));
+
+			}
+		});
 		tempoWheel.addClickingListener(new OnWheelClickedListener() {
 
 			@Override
 			public void onItemClicked(WheelView wheel, int itemIndex) {
-
-				// tempoNumericWheelAdapter.setTextColor(Color.parseColor("#FFbb4738"));
-				tempo.setText(Integer.toString(tempoWheel.getCurrentItem()));
-				set_tempo2.setText("="
-						+ Integer.toString(tempoWheel.getCurrentItem()));
-				//Toast.makeText(getBaseContext(),tempo.toString(),10).show();
-				data.tempo=Integer.parseInt(tempo.getText().toString());
+				//
 				tempoDialog.dismiss();
 			}
 
@@ -509,7 +518,7 @@ public class Setting extends Activity {
 		for (i = 0; i < meters.length; i++) {
 			meters[i].setTextSize(100);
 			meters[i].setTypeface(note2);
-			meters[i].setTextColor(Color.parseColor("#FF1F1D2A"));
+			meters[i].setTextColor(Color.parseColor("#FF000000"));
 		}
 	}
 
@@ -528,7 +537,7 @@ public class Setting extends Activity {
 		for (i = 0; i < quantizers.length; i++) {
 			quantizers[i].setTextSize(100);
 			quantizers[i].setTypeface(note2);
-			quantizers[i].setTextColor(Color.parseColor("#FF1F1D2A"));
+			quantizers[i].setTextColor(Color.parseColor("#FF000000"));
 		}
 	}
 
@@ -557,13 +566,13 @@ public class Setting extends Activity {
 		typeText.setText("type");
 		quantizerText.setText("quantize");
 		tripletText.setText("triple");
-		
-		data.tempo=120;
-		data.key="C";
-		data.meter="4/4";
-		data.quantizer=8;
-		data.triple=false;
-		data.type="male";
+
+		data.tempo = 120;
+		data.key = "C";
+		data.meter = "4/4";
+		data.quantizer = 8;
+		data.triple = false;
+		data.type = "male";
 
 		// nextBtn.setText("start");
 
@@ -585,16 +594,18 @@ public class Setting extends Activity {
 		mSL.addView(tempo, 530f, 140f, 100f, 50f);
 		mSL.addView(type, 530f, 187f, 23f, 23f);
 		mSL.addView(quantizer, 530f, 210f, 100f, 50f);
-		mSL.addView(triplet, 480f, 260f, 100f, 70f);
+		mSL.addView(triplet, 475f, 260f, 100f, 70f);
 
 		mSL.addView(meterText, 400f, 50f, 100f, 50f);
 		mSL.addView(keyText, 400f, 95f, 100f, 50f);
 		mSL.addView(tempoText, 400f, 140f, 100f, 50f);
 		mSL.addView(typeText, 400f, 185f, 150f, 50f);
 		mSL.addView(quantizerText, 400f, 226f, 100f, 50f);
-		mSL.addView(tripletText, 400f, 275f, 100f, 50f);
+		mSL.addView(tripletText, 400f, 270f, 100f, 50f);
 
-		mSL.addView(tripleCheck, 545f, 275f, 20f, 20f);
+		tripleCheck.setScaleX(0.7f);
+		tripleCheck.setScaleY(0.7f);
+		mSL.addView(tripleCheck, 517f, 270f, 40f, 40f);
 
 		// 사이즈 조
 		mSL.setScale_TextSize(set_note, 70f);// 큰악보
@@ -605,7 +616,7 @@ public class Setting extends Activity {
 		mSL.setScale_TextSize(tempo, 22f);
 		mSL.setScale_TextSize(quantizer, 40f);
 		// mSL.setScale_TextSize(type, 22f);
-		mSL.setScale_TextSize(triplet, 40f);
+		mSL.setScale_TextSize(triplet, 30f);
 
 		mSL.setScale_TextSize(keyText, 22f);
 		mSL.setScale_TextSize(meterText, 22f);
@@ -619,24 +630,24 @@ public class Setting extends Activity {
 		Typeface face = Typeface.createFromAsset(getAssets(),
 				"fonts/Daum_Regular.ttf");
 
-		set_tempo1.setTextColor(Color.parseColor("#FF1F1D2A"));
-		set_tempo2.setTextColor(Color.parseColor("#FF1F1D2A"));
-		key.setTextColor(Color.parseColor("#FF1F1D2A"));
-		meter.setTextColor(Color.parseColor("#FF1F1D2A"));
-		tempo.setTextColor(Color.parseColor("#FF1F1D2A"));
-		// type.setTextColor(Color.parseColor("#FF1F1D2A"));
-		quantizer.setTextColor(Color.parseColor("#FF1F1D2A"));
-		triplet.setTextColor(Color.parseColor("#FF1F1D2A"));
+		set_tempo1.setTextColor(Color.parseColor("#FF000000"));
+		set_tempo2.setTextColor(Color.parseColor("#FF000000"));
+		key.setTextColor(Color.parseColor("#FF000000"));
+		meter.setTextColor(Color.parseColor("#FF000000"));
+		tempo.setTextColor(Color.parseColor("#FF000000"));
+		// type.setTextColor(Color.parseColor("#FF000000"));
+		quantizer.setTextColor(Color.parseColor("#FF000000"));
+		triplet.setTextColor(Color.parseColor("#FF000000"));
 
-		keyText.setTextColor(Color.parseColor("#FF1F1D2A"));
-		meterText.setTextColor(Color.parseColor("#FF1F1D2A"));
-		tempoText.setTextColor(Color.parseColor("#FF1F1D2A"));
-		typeText.setTextColor(Color.parseColor("#FF1F1D2A"));
-		quantizerText.setTextColor(Color.parseColor("#FF1F1D2A"));
-		tripletText.setTextColor(Color.parseColor("#FF1F1D2A"));
-		set_note.setTextColor(Color.parseColor("#FF1F1D2A"));
+		keyText.setTextColor(Color.parseColor("#FF000000"));
+		meterText.setTextColor(Color.parseColor("#FF000000"));
+		tempoText.setTextColor(Color.parseColor("#FF000000"));
+		typeText.setTextColor(Color.parseColor("#FF000000"));
+		quantizerText.setTextColor(Color.parseColor("#FF000000"));
+		tripletText.setTextColor(Color.parseColor("#FF000000"));
+		set_note.setTextColor(Color.parseColor("#FF000000"));
 
-		// nextBtn.setTextColor(Color.parseColor("#FF1F1D2A"));
+		// nextBtn.setTextColor(Color.parseColor("#FF000000"));
 
 		set_tempo2.setTypeface(face);
 		keyText.setTypeface(face);
@@ -764,32 +775,32 @@ public class Setting extends Activity {
 					|| v == types[3]) {
 				if (v == types[0]) {
 					types[0].setBackgroundResource(R.drawable.male);
-					data.type="male";
+					data.type = "male";
 					type.setBackgroundResource(R.drawable.male);
 				} else if (v == types[1]) {
 					types[1].setBackgroundResource(R.drawable.female);
 					type.setBackgroundResource(R.drawable.female);
-					data.type="female";
+					data.type = "female";
 				} else if (v == types[2]) {
 					types[2].setBackgroundResource(R.drawable.string);
 					type.setBackgroundResource(R.drawable.string);
-					data.type="string";
+					data.type = "string";
 				} else if (v == types[3]) {
 					types[3].setBackgroundResource(R.drawable.piano);
 					type.setBackgroundResource(R.drawable.piano);
-					data.type="piano";
+					data.type = "piano";
 				}
 				typeDialog.dismiss();
 				return;
 			}
 			if (v == quantizers[0] || v == quantizers[1] || v == quantizers[2]) {
-				if (v == quantizers[0]) {
-					data.quantizer = 4;
-				} else if (v == quantizers[1]) {
+				if (v == quantizers[0]) {// 16
 					data.quantizer = 16;
-				}
-				if (v == quantizers[2]) {
+				} else if (v == quantizers[1]) {// 8
 					data.quantizer = 8;
+				}
+				if (v == quantizers[2]) {// 4
+					data.quantizer = 4;
 				}
 				quantizer.setText(((TextView) v).getText());
 				quantizerDialog.dismiss();
@@ -797,31 +808,31 @@ public class Setting extends Activity {
 				if (v == meters[0]) {
 					selectMeter = "3";
 					meter.setText("3/4");
-					data.meter="3/4";
+					data.meter = "3/4";
 					set_tempo1.setText("q");
 				} else if (v == meters[1]) {
 					selectMeter = "4";
 					meter.setText("4/4");
-					data.meter="4/4";
+					data.meter = "4/4";
 					set_tempo1.setText("q");
 				} else if (v == meters[2]) {
 					meter.setText("6/8");
 					selectMeter = "6";
-					data.meter="6/8";
+					data.meter = "6/8";
 					set_tempo1.setText("e");
 				}
 				set_note.setText(selectScore + selectKey1 + selectMeter
 						+ selectKey2);
 				meterDialog.dismiss();
 			}
-			((TextView) v).setTextColor(Color.parseColor("#FF1F1D2A"));
+			((TextView) v).setTextColor(Color.parseColor("#FF000000"));
 		}
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_CODE_ANOTHER) {
-			//Toast.makeText(getBaseContext(), "취소하고 다시돌아왔음요", 10).show();
+			// Toast.makeText(getBaseContext(), "취소하고 다시돌아왔음요", 10).show();
 
 		} else {
 			Toast.makeText(getBaseContext(), "ff", 10).show();

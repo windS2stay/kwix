@@ -38,6 +38,7 @@ public class Scoremaker extends Activity {
 	HorizontalScrollView noteScroll;
 	ImageButton metronomeButton, playButton, pauseButton, stopButton,
 			recordButton, exportButton, settingButton, backButton, stateButton;
+	ImageView metronome;
 	int quantizeValue;
 
 	TextView tempo, quantize;
@@ -123,6 +124,7 @@ public class Scoremaker extends Activity {
 		quantizeDialog = new Dialog(Scoremaker.this);
 		settingCancel = new ImageButton(this);
 		settingCheck = new ImageButton(this);
+		metronome=new ImageView(this);
 
 		metronomeButton.setBackgroundResource(R.drawable.metro_on);
 		playButton.setBackgroundResource(R.drawable.play_on);
@@ -165,6 +167,7 @@ public class Scoremaker extends Activity {
 		mSL.addView(stateButton, 133f, 685f, 77f, 77f);
 
 		btnSetting();
+		metroSetting();
 	}
 
 	void btnSetting() {
@@ -1104,6 +1107,22 @@ public class Scoremaker extends Activity {
 		}
 	}
 
+	void metroSetting()
+	{
+		if(data.meter.equals("3/4"))
+		{
+			metronome.setBackgroundResource(R.drawable.note_16_non);
+		}
+		else if(data.meter.equals("4/4"))
+		{
+			
+		}
+		else if(data.meter.equals("6/"))
+		{
+			
+		}
+		
+	}
 	private class OnClickArray implements OnClickListener, OnTouchListener {
 
 		@Override
